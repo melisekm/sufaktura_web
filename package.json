@@ -17,10 +17,9 @@
         "start": "cd resources/frontend && npm run start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "postinstall": "npm run prod"
+        "eject": "react-scripts eject"
     },
-    "devDependencies": {
+    "dependencies": {
         "@babel/preset-react": "^7.13.13",
         "jquery": "^3.6",
         "laravel-mix": "^6.0.6",

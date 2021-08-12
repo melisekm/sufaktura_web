@@ -13,6 +13,11 @@ app/storage/
 public/storage
 public/hot
 
+/public/js
+/public/css
+/public/fonts
+/public/images
+
 # Laravel 5 & Lumen specific with changed public path
 public_html/storage
 public_html/hot
@@ -29,14 +34,8 @@ Homestead.json
 /public/storage
 /storage/*.key
 /vendor
-.env
 .env.backup
-.phpunit.result.cache
 docker-compose.override.yml
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
 /.idea
 /.vscode
 
@@ -207,7 +206,6 @@ Sessionx.vim
 
 # Temporary
 .netrwhist
-*~
 # Auto-generated tag files
 tags
 # Persistent undo
@@ -215,7 +213,6 @@ tags
 
 ##### Emacs
 # -*- mode: gitignore; -*-
-*~
 \#*\#
 /.emacs.desktop
 /.emacs.desktop.lock
@@ -298,7 +295,6 @@ GitHub.sublime-settings
 
 ##### Notepad++
 # Notepad++ backups #
-*.bak
 
 ##### TextMate
 *.tmproj
@@ -322,7 +318,6 @@ tmtags
 **/nbproject/Package-*.bash
 build/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
 
@@ -403,8 +398,6 @@ fabric.properties
 .metadata
 bin/
 tmp/
-*.tmp
-*.bak
 *.swp
 *~.nib
 local.properties
@@ -495,7 +488,6 @@ gradle-app.setting
 
 ##### Composer
 composer.phar
-/vendor/
 
 
 ##### PHP CodeSniffer
