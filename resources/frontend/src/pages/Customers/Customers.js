@@ -3,30 +3,38 @@ import TableItem from "../../component/TableItem/TableItem";
 import ContentPage from "../../component/ContentPage/ContentPage";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
 import RequestService from '../../utils/request-service';
+import Notification from "../../component/Notification/Notification";
 
 export default class Customers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             "isModalActive": false,
+            "isNotificationActive": false,
             "selectedCustomer": null,
             "customers": [],
             "isLoading": true
         }
         this.toggleModal = this.toggleModal.bind(this);
         this.saveCustomer = this.saveCustomer.bind(this);
+        this.toggleNotification = this.toggleNotification.bind(this);
     }
 
     saveCustomer(updatedCustomer) {
-        RequestService.put("/customer", updatedCustomer).then(r => {
-            if (r.status === 204) {
-                let customers = [...this.state.customers]
-                customers[updatedCustomer.id - 1] = updatedCustomer
-                this.setState({"customers": customers})
-            } else {
-                // TODO
-            }
-        })
+        RequestService.put("/customer", updatedCustomer)
+            .then(response => {
+                if (response.status === 204) {
+                    let customers = [...this.state.customers]
+                    customers[updatedCustomer.id - 1] = updatedCustomer
+                    this.setState({"customers": customers, "isNotificationActive": true})
+                } else {
+                    throw response.statusText
+                }
+            })
+            .catch(error => {
+                    console.log(error)
+                }
+            )
 
     }
 
@@ -48,6 +56,12 @@ export default class Customers extends React.Component {
         })
     }
 
+    toggleNotification(){
+        this.setState({
+            "isNotificationActive":false
+        })
+    }
+
     render() {
         const customersTableItems = this.state.customers.map(
             (customer) => <TableItem key={customer.id}
@@ -62,8 +76,15 @@ export default class Customers extends React.Component {
         } else {
             modalWindow = null
         }
+        let notification
+        if (this.state.isNotificationActive) {
+            notification = <Notification />
+        } else {
+            notification = null
+        }
         return (
             <div>
+                {notification}
                 <ContentPage title="Customers" description="Here you can find the comprehensive list of customers."
                              tableData={customersTableItems}
                              tableColumns={["ID", "Name", "Address", "Details"]}

@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import '@fortawesome/fontawesome-free/css/all.css'
+import 'animate.css/animate.min.css';
 import App from './pages/App/App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
