@@ -1,8 +1,18 @@
 import React, {Component} from 'react';
 import Table from "../Table/Table";
+import LoadingButton from "../Button/LoadingButton";
 
 export default class ContentPage extends Component {
     render() {
+        let loadingTable
+        if (this.props.isLoading) {
+            loadingTable = <LoadingButton isCentered={true}/>
+        } else {
+            loadingTable =
+                <Table columns={this.props.tableColumns}>
+                    {this.props.tableData}
+                </Table>
+        }
         return (
             <div className="content">
                 <h3 className="title is-3">{this.props.title}</h3>
@@ -22,10 +32,7 @@ export default class ContentPage extends Component {
                             </div>
                         </div>
                     </div>
-
-                    <Table columns={this.props.tableColumns}>
-                        {this.props.tableData}
-                    </Table>
+                    {loadingTable}
                 </div>
             </div>
         );

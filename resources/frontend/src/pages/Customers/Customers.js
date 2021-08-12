@@ -9,48 +9,41 @@ export default class Customers extends React.Component {
         super(props);
         this.state = {
             "isModalActive": false,
-            "selectedCustomer": null
+            "selectedCustomer": null,
+            "customers": [],
+            "isLoading": true
         }
         this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentDidMount() {
         RequestService.get("/customers").then(r => {
+                console.log(r.data)
                 this.setState({
-                    "dog": r.data
+                    "customers": r.data,
+                    "isLoading": false
                 })
-                console.log(this.state.dog)
             }
         )
     }
-
 
     toggleModal(rowInfo) {
         this.setState({
             "isModalActive": !this.state.isModalActive,
-            "selectedCustomer": {
-                "name": rowInfo[1],
-                "address": rowInfo[2],
-            }
+            "selectedCustomer": this.state.customers[rowInfo[0] - 1]
         })
     }
 
-    customersData = [
-        ["1", "Martin Novy", "Ilkovska 2, Bratislava 137 02"],
-        ["2", "Peter Stary", "B.Nemcovej 10, Kosice 854 42"],
-        ["3", "Ivan Vladimirovic", "Ruska 9, Moskva 201 02"]
-    ]
-
-
     render() {
-        const customersTableItems = this.customersData.map(
-            (customerInfo, index) => <TableItem key={customerInfo[0]} data={customerInfo}
-                                                modalToggle={this.toggleModal}/>
+        const customersTableItems = this.state.customers.map(
+            (customer) => <TableItem key={customer.id}
+                                     data={[customer.id, customer.name, `${customer.address}, ${customer.city} ${customer.postcode}`]}
+                                     modalToggle={this.toggleModal}/>
         )
         let modalWindow;
         if (this.state.isModalActive) {
             modalWindow = <CustomerModal isActive={this.state.isModalActive} modalToggle={this.toggleModal}
-                                         selectedCustomer={this.state.selectedCustomer}/>
+                                         customer={this.state.selectedCustomer}/>
         } else {
             modalWindow = null
         }
@@ -59,6 +52,7 @@ export default class Customers extends React.Component {
                 <ContentPage title="Customers" description="Here you can find the comprehensive list of customers."
                              tableData={customersTableItems}
                              tableColumns={["ID", "Name", "Address", "Details"]}
+                             isLoading={this.state.isLoading}
                 />
                 {modalWindow}
             </div>

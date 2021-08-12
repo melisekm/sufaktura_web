@@ -21,7 +21,7 @@ export default class Home extends React.Component {
                             <a href={"/files/VAVA - 1 Zadanie.pdf"} target="_blank" rel="noreferrer">
                                 <button className="button is-link is-medium">
                                     <p>
-                                        <i className="fas fa-file-pdf"/> Learn Moree
+                                        <i className="fas fa-file-pdf"/> Learn More
                                     </p>
                                 </button>
                             </a>

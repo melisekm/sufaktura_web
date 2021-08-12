@@ -5,8 +5,10 @@ export default class CustomerModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "name": this.props.selectedCustomer.name,
-            "address": this.props.selectedCustomer.address
+            "name": this.props.customer.name,
+            "address": this.props.customer.address,
+            "city": this.props.customer.city,
+            "postcode":this.props.customer.postcode
         }
     }
 
@@ -45,7 +47,7 @@ export default class CustomerModal extends Component {
                             <div className="field">
                                 <label className="label">City</label>
                                 <p className="control has-icons-left">
-                                    <input className="input" type="text" defaultValue="Nové Zámky"/>
+                                    <input className="input" type="text" defaultValue={this.state.city}/>
                                     <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
@@ -56,7 +58,7 @@ export default class CustomerModal extends Component {
                             <div className="field">
                                 <label className="label">Postcode</label>
                                 <p className="control has-icons-left">
-                                    <input className="input" type="text" defaultValue="94002"/>
+                                    <input className="input" type="text" defaultValue={this.state.postcode}/>
                                     <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>

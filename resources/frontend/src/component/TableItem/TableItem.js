@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-// import "../Table/Table.css"
 
 export default class TableItem extends Component {
     render() {
-        const listProps = this.props.data.map((prop, index) =>
-            <td key={index}>{prop}</td>
-        );
+        let listProps = []
+        for(const key in this.props.data){
+            const value = this.props.data[key]
+            listProps.push(
+                <td key={value}>{value}</td>
+            )
+        }
         return (
             <React.Fragment>
                 <tr>
