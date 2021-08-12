@@ -15,6 +15,7 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
+Route::put("v1/customer", [CustomerController::class, "updateCustomer"]);
 Route::get('v1/customers', [CustomerController::class, 'getAllCustomers']);
 
 

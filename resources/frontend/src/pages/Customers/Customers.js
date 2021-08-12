@@ -14,11 +14,24 @@ export default class Customers extends React.Component {
             "isLoading": true
         }
         this.toggleModal = this.toggleModal.bind(this);
+        this.saveCustomer = this.saveCustomer.bind(this);
+    }
+
+    saveCustomer(updatedCustomer) {
+        RequestService.put("/customer", updatedCustomer).then(r => {
+            if (r.status === 204) {
+                let customers = [...this.state.customers]
+                customers[updatedCustomer.id - 1] = updatedCustomer
+                this.setState({"customers": customers})
+            } else {
+                // TODO
+            }
+        })
+
     }
 
     componentDidMount() {
         RequestService.get("/customers").then(r => {
-                console.log(r.data)
                 this.setState({
                     "customers": r.data,
                     "isLoading": false
@@ -28,9 +41,10 @@ export default class Customers extends React.Component {
     }
 
     toggleModal(rowInfo) {
+        const selectedCustomer = rowInfo ? this.state.customers[rowInfo[0] - 1] : null
         this.setState({
             "isModalActive": !this.state.isModalActive,
-            "selectedCustomer": this.state.customers[rowInfo[0] - 1]
+            "selectedCustomer": selectedCustomer
         })
     }
 
@@ -43,6 +57,7 @@ export default class Customers extends React.Component {
         let modalWindow;
         if (this.state.isModalActive) {
             modalWindow = <CustomerModal isActive={this.state.isModalActive} modalToggle={this.toggleModal}
+                                         onSave={this.saveCustomer}
                                          customer={this.state.selectedCustomer}/>
         } else {
             modalWindow = null
