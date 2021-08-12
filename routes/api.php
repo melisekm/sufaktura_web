@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,19 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-function debug_to_console($data)
-{
-    $output = $data;
-    if (is_array($output))
-        $output = implode(',', $output);
+Route::get('v1/customers', [CustomerController::class, 'getAllCustomers']);
 
-    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
-}
-
-Route::get('v1/customers', function () {
-
-    return response(['Product 100', 'Product 2', 'Product 3'], 200);
-});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

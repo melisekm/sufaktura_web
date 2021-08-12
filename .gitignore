@@ -503,3 +503,4 @@ composer.phar
 *.sass.map
 *.scss.map
 .env-prod
+.env
