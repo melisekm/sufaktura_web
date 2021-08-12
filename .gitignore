@@ -23,7 +23,6 @@ public_html/storage
 public_html/hot
 
 storage/*.key
-.env
 Homestead.yaml
 Homestead.json
 /.vagrant
@@ -503,3 +502,4 @@ composer.phar
 *.css.map
 *.sass.map
 *.scss.map
+.env-prod

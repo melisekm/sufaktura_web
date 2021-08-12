@@ -17,7 +17,8 @@
         "start": "cd resources/frontend && npm run start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "postinstall": "npm run prod"
     },
     "dependencies": {
         "@babel/preset-react": "^7.13.13",
