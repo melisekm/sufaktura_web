@@ -18,6 +18,7 @@ export default class Customers extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.saveCustomer = this.saveCustomer.bind(this);
         this.toggleNotification = this.toggleNotification.bind(this);
+        this.fillTableItems = this.fillTableItems.bind(this);
     }
 
     saveCustomer(updatedCustomer) {
@@ -56,18 +57,22 @@ export default class Customers extends React.Component {
         })
     }
 
-    toggleNotification(){
+    toggleNotification() {
         this.setState({
-            "isNotificationActive":false
+            "isNotificationActive": false
         })
     }
 
-    render() {
-        const customersTableItems = this.state.customers.map(
+    fillTableItems(){
+        return this.state.customers.map(
             (customer) => <TableItem key={customer.id}
                                      data={[customer.id, customer.name, `${customer.address}, ${customer.city} ${customer.postcode}`]}
                                      modalToggle={this.toggleModal}/>
         )
+    }
+
+    render() {
+        const customersTableItems = this.fillTableItems()
         let modalWindow;
         if (this.state.isModalActive) {
             modalWindow = <CustomerModal isActive={this.state.isModalActive} modalToggle={this.toggleModal}
@@ -78,7 +83,11 @@ export default class Customers extends React.Component {
         }
         let notification
         if (this.state.isNotificationActive) {
-            notification = <Notification />
+            notification =
+                <Notification isCentered={true}
+                              hideNotification={this.toggleNotification}>
+                    Sucessfuly edited customer
+                </Notification>
         } else {
             notification = null
         }

@@ -42,7 +42,7 @@ class CustomerController extends Controller
                 "postcode" => "required",
             ]);
         } catch (ValidationException $e) {
-            return response(422, $e->getMessage());
+            return response($e->getMessage(), 422);
         }
         (new Customer($request->all()))->save();
         return response(null, 201);

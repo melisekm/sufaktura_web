@@ -1,4 +1,10 @@
-.notification.is-primary.customers {
+.notif.customers {
     position: absolute;
     z-index: 1;
+}
+
+.notif.customers.is-centered{
+    top: 14%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
