@@ -2,12 +2,13 @@ import React from "react";
 import TableItem from "../../component/TableItem/TableItem";
 import ContentPage from "../../component/ContentPage/ContentPage";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
-import RequestService from '../../utils/request-service';
 import Notification from "../../component/Notification/Notification";
+import RequestService from '../../utils/request-service';
 
 export default class Customers extends React.Component {
     constructor(props) {
         super(props);
+        this.customerColumns = ["ID", "Name", "Address", "Details"]
         this.state = {
             "isModalActive": false,
             "isNotificationActive": false,
@@ -16,27 +17,8 @@ export default class Customers extends React.Component {
             "isLoading": true
         }
         this.toggleModal = this.toggleModal.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
         this.saveCustomer = this.saveCustomer.bind(this);
-        this.toggleNotification = this.toggleNotification.bind(this);
-        this.fillTableItems = this.fillTableItems.bind(this);
-    }
-
-    saveCustomer(updatedCustomer) {
-        RequestService.put("/customer", updatedCustomer)
-            .then(response => {
-                if (response.status === 204) {
-                    let customers = [...this.state.customers]
-                    customers[updatedCustomer.id - 1] = updatedCustomer
-                    this.setState({"customers": customers, "isNotificationActive": true})
-                } else {
-                    throw response.statusText
-                }
-            })
-            .catch(error => {
-                    console.log(error)
-                }
-            )
-
     }
 
     componentDidMount() {
@@ -57,13 +39,30 @@ export default class Customers extends React.Component {
         })
     }
 
-    toggleNotification() {
+    hideNotification() {
         this.setState({
             "isNotificationActive": false
         })
     }
 
-    fillTableItems(){
+    saveCustomer(updatedCustomer) {
+        RequestService.put("/customer", updatedCustomer)
+            .then(response => {
+                if (response.status === 204) {
+                    let customers = [...this.state.customers]
+                    customers[updatedCustomer.id - 1] = updatedCustomer
+                    this.setState({"customers": customers, "isNotificationActive": true})
+                } else {
+                    throw response.statusText
+                }
+            })
+            .catch(error => {
+                    console.log(error) // TODO
+                }
+            )
+    }
+
+    getTableItems() {
         return this.state.customers.map(
             (customer) => <TableItem key={customer.id}
                                      data={[customer.id, customer.name, `${customer.address}, ${customer.city} ${customer.postcode}`]}
@@ -71,35 +70,35 @@ export default class Customers extends React.Component {
         )
     }
 
-    render() {
-        const customersTableItems = this.fillTableItems()
-        let modalWindow;
+    getModalEditWindow() {
         if (this.state.isModalActive) {
-            modalWindow = <CustomerModal isActive={this.state.isModalActive} modalToggle={this.toggleModal}
-                                         onSave={this.saveCustomer}
-                                         customer={this.state.selectedCustomer}/>
-        } else {
-            modalWindow = null
+            return <CustomerModal isActive={this.state.isModalActive} modalToggle={this.toggleModal}
+                                  onSave={this.saveCustomer}
+                                  customer={this.state.selectedCustomer}/>
         }
-        let notification
+        return null
+    }
+
+    getNotification() {
         if (this.state.isNotificationActive) {
-            notification =
-                <Notification isCentered={true}
-                              hideNotification={this.toggleNotification}>
-                    Sucessfuly edited customer
-                </Notification>
-        } else {
-            notification = null
+            return <Notification isCentered={true}
+                                 hideNotification={this.hideNotification}>
+                Sucessfuly edited customer
+            </Notification>
         }
+        return null
+    }
+
+    render() {
         return (
             <div>
-                {notification}
+                {this.getNotification()}
                 <ContentPage title="Customers" description="Here you can find the comprehensive list of customers."
-                             tableData={customersTableItems}
-                             tableColumns={["ID", "Name", "Address", "Details"]}
+                             tableData={this.getTableItems()}
+                             tableColumns={this.customerColumns}
                              isLoading={this.state.isLoading}
                 />
-                {modalWindow}
+                {this.getModalEditWindow()}
             </div>
         )
     }

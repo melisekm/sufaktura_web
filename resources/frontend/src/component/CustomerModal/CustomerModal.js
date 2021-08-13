@@ -14,7 +14,6 @@ export default class CustomerModal extends Component {
             }
         }
         this.onFormSubmit = this.onFormSubmit.bind(this);
-        this.saveAndHide = this.saveAndHide.bind(this);
     }
 
     onFormSubmit(event) {
@@ -107,6 +106,4 @@ export default class CustomerModal extends Component {
             </div>
         );
     }
-
-
 }
