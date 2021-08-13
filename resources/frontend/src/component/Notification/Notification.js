@@ -9,12 +9,13 @@ export default class Notification extends Component {
 
     render() {
         return (
-            <div className={`buttons ${this.props.isCentered ? "is-centered" : ""} notif customers `}>
-                <div className="notification is-primary is-large">
+            <div className="level-item">
+                <div
+                    className={`notification is-primary is-large ${this.props.isCentered ? "is-centered" : ""} customers`}>
                     <button onClick={this.props.hideNotification} className="delete"/>
                     {this.props.children}
                 </div>
             </div>
-        );
+        )
     }
 }

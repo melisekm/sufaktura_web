@@ -91,7 +91,7 @@ export default class Customers extends React.Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 {this.getNotification()}
                 <ContentPage title="Customers" description="Here you can find the comprehensive list of customers."
                              tableData={this.getTableItems()}
@@ -99,7 +99,7 @@ export default class Customers extends React.Component {
                              isLoading={this.state.isLoading}
                 />
                 {this.getModalEditWindow()}
-            </div>
+            </React.Fragment>
         )
     }
 }

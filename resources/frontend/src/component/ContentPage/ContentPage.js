@@ -8,7 +8,7 @@ export default class ContentPage extends Component {
         if (this.props.isLoading) {
             return <LoadingButton isCentered={true}/>
         }
-        return <Table columns={this.props.tableColumns}> {this.props.tableData} </Table>
+        return <Table columns={this.props.tableColumns}>{this.props.tableData}</Table>
     }
 
     render() {

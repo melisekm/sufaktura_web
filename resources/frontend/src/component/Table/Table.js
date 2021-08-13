@@ -10,13 +10,9 @@ export default class Table extends Component {
             <div className="table-container">
                 <table className="table is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
                     <thead>
-                    <tr>
-                        {listProps}
-                    </tr>
+                    <tr>{listProps}</tr>
                     </thead>
-                    <tbody>
-                        {this.props.children}
-                    </tbody>
+                    <tbody>{this.props.children}</tbody>
                 </table>
             </div>
         );

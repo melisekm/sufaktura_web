@@ -1,10 +1,17 @@
-.notif.customers {
-    position: absolute;
+.notification.customers{
+    position: fixed;
     z-index: 1;
+    animation:moveOpen 2s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
 }
-
-.notif.customers.is-centered{
-    top: 14%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+@keyframes moveOpen
+{
+    from {transform: translate(0,-100px);}
+    10% {transform: translate(0,20px);}
+    12% {transform: translate(0,22px);}
+    16% {transform: translate(0,20px);}
+    80% {transform: translate(0,20px);}
+    85% {transform: translate(0,25px);}
+    to {transform: translate(0,-100px);}
 }
