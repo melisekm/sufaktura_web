@@ -29,7 +29,7 @@
     "webpack": "^5.50.0"
   },
   "scripts": {
-    "start": "cd resources/frontend && react-scripts start",
+    "start": "cd resources/frontend && npm run start",
     "build": "npm run prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
