@@ -1,48 +1,59 @@
 {
-    "name": "myapp",
-    "description": "a really cool app",
-    "version": "1.0.0",
-    "engines": {
-        "node": "14.15.4"
-    },
-    "private": true,
-    "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production",
-        "start": "cd resources/frontend && npm run start",
-        "build": "npm run prod",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "dependencies": {
-        "@babel/preset-react": "^7.13.13",
-        "@fortawesome/fontawesome-free": "^5.15.4",
-        "@testing-library/jest-dom": "^5.11.4",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/user-event": "^12.1.10",
-        "animate.css": "^4.1.1",
-        "axios": "^0.21.1",
-        "bootstrap": "^5.1.0",
-        "bulma": "^0.9.3",
-        "jquery": "^3.6",
-        "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
-        "popper.js": "^1.16.1",
-        "postcss": "^8.1.14",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "react-router-dom": "^5.2.0",
-        "react-scripts": "4.0.3",
-        "reactstrap": "^8.9.0",
-        "resolve-url-loader": "^4.0.0",
-        "sass": "^1.32.11",
-        "sass-loader": "^11.0.1",
-        "web-vitals": "^1.0.1"
-    },
-    "proxy": "http://localhost:8000/"
+  "name": "superfaktura",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/preset-react": "^7.13.13",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "animate.css": "^4.1.1",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.1.0",
+    "bulma": "^0.9.3",
+    "jquery": "^3.6",
+    "laravel-mix": "^6.0.6",
+    "lodash": "^4.17.19",
+    "popper.js": "^1.16.1",
+    "postcss": "^8.1.14",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "reactstrap": "^8.9.0",
+    "resolve-url-loader": "^4.0.0",
+    "sass": "^1.32.11",
+    "sass-loader": "^11.0.1",
+    "web-vitals": "^1.0.1",
+    "webpack": "^5.50.0"
+  },
+  "scripts": {
+    "start": "cd resources/frontend && react-scripts start",
+    "build": "npm run prod",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "prod": "npm run production",
+    "production": "mix --production"
+  },
+  "proxy": "http://localhost:8000/",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {}
 }
