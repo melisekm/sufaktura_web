@@ -11,7 +11,7 @@ export default class Notification extends Component {
         return (
             <div className="level-item">
                 <div
-                    className={`notification is-primary is-large ${this.props.isCentered ? "is-centered" : ""} customers`}>
+                    className="notification is-primary is-large">
                     <button onClick={this.props.hideNotification} className="delete"/>
                     {this.props.children}
                 </div>
