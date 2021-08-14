@@ -90,9 +90,9 @@ export default class Customers extends React.Component {
     }
 
 
-    submitCustomer(updatedCustomer, requestMethod, onSucessMethod, sucessStatus) {
+    submitCustomer(customer, requestMethod, onSucessMethod, sucessStatus) {
         return new Promise((resolve, reject) => {
-            requestMethod("/customer", updatedCustomer)
+            requestMethod("/customer", customer)
                 .then(response => {
                     if (response.status === sucessStatus) {
                         onSucessMethod(response.data)
@@ -156,7 +156,7 @@ export default class Customers extends React.Component {
                              isLoading={this.state.isLoading}
                              toggleCreate={this.toggleCreateModal}
                 />
-                {this.getModalWindow(this.state.isEditModalActive, this.toggleEditModal, this.updateCustomerInTable, 204, RequestService.put)}
+                {this.getModalWindow(this.state.isEditModalActive, this.toggleEditModal, this.updateCustomerInTable, 201, RequestService.put)}
                 {this.getModalWindow(this.state.isCreateModalActive, this.toggleCreateModal, this.refreshPage, 201, RequestService.post)}
 
             </React.Fragment>

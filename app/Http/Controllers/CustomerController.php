@@ -14,7 +14,7 @@ class CustomerController extends Controller
         return Customer::orderBy("id", "ASC")->get();
     }
 
-    public function updateCustomer(Request $request): \Illuminate\Http\Response
+    public function updateCustomer(Request $request)
     {
         $request->validate([
             "id" => "required",
@@ -26,8 +26,7 @@ class CustomerController extends Controller
 
         $customer = Customer::find($request->input("id"));
         $customer->update($request->all());
-
-        return response(null, 204);
+        return response($customer, 201);
     }
 
     public function createCustomer(Request $request)
