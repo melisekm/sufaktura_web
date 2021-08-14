@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Notification from "../Notification/Notification";
 
 
 export default class CustomerModal extends Component {
@@ -11,9 +12,17 @@ export default class CustomerModal extends Component {
                 "address": this.props.customer.address,
                 "city": this.props.customer.city,
                 "postcode": this.props.customer.postcode
-            }
+            },
+            "errors": {
+                "name": false,
+                "address": false,
+                "city": false,
+                "postcode": false
+            },
+            "isNotificationActive": false
         }
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
     }
 
     async onFormSubmit(event) {
@@ -29,14 +38,38 @@ export default class CustomerModal extends Component {
         }
         await this.props.onSave(customer)
             .catch(error => {
-                console.log(error)
+                if (error.data) {
+                    error = error.data
+                    this.setState({
+                        "errors": {
+                            "name": error.name,
+                            "address": error.address,
+                            "city": error.city,
+                            "postcode": error.postcode
+                        }
+                    })
+                } else {
+                    this.setState({
+                        "isNotificationActive": true
+                    })
+                }
             })
     }
 
-    submitForm() {
-        if (!this.props.onSave(this.state.customer)) {
-            alert("u done fucked up")
+    hideNotification() {
+        this.setState({
+            "isNotificationActive": false
+        })
+    }
+
+    getNotification() {
+        if (this.state.isNotificationActive) {
+            return <Notification design="is-danger"
+                                 hideNotification={this.hideNotification}>
+                <b>INTERNAL SERVER ERROR, TRY AGAIN LATER</b>
+            </Notification>
         }
+        return null
     }
 
     render() {
@@ -44,6 +77,7 @@ export default class CustomerModal extends Component {
             <React.Fragment>
                 <form onSubmit={this.onFormSubmit}>
                     <div className={`modal ${this.props.isActive ? "is-active" : ""}`}>
+                        {this.getNotification()}
                         <div className="modal-background"/>
                         <div className="modal-card">
                             <header className="modal-card-head">
@@ -55,47 +89,59 @@ export default class CustomerModal extends Component {
                                 <div className="field">
                                     <label className="label">Name</label>
                                     <p className="control has-icons-left">
-                                        <input name="name" className="input"
+                                        <input name="name"
+                                               className={`input ${this.state.errors.name ? "is-danger" : ""}`}
                                                type="text" defaultValue={this.state.customer.name}/>
                                         <span className="icon is-small is-left">
                                           <i className="fas fa-user"/>
                                         </span>
                                     </p>
+                                    {this.state.errors.name ?
+                                        <p className="help is-danger">{this.state.errors.name}</p> : null}
                                 </div>
 
                                 <div className="field">
                                     <label className="label">Address</label>
                                     <p className="control has-icons-left">
-                                        <input name="address" className="input"
+                                        <input name="address"
+                                               className={`input ${this.state.errors.address ? "is-danger" : ""}`}
                                                type="text" defaultValue={this.state.customer.address}/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
                                     </p>
+                                    {this.state.errors.address ?
+                                        <p className="help is-danger">{this.state.errors.address}</p> : null}
                                 </div>
 
                                 <div className="field">
                                     <label className="label">City</label>
                                     <p className="control has-icons-left">
-                                        <input name="city" className="input"
+                                        <input name="city"
+                                               className={`input ${this.state.errors.city ? "is-danger" : ""}`}
                                                type="text" defaultValue={this.state.customer.city}/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
                                     </p>
+                                    {this.state.errors.city ?
+                                        <p className="help is-danger">{this.state.errors.city}</p> : null}
                                 </div>
-
 
                                 <div className="field">
                                     <label className="label">Postcode</label>
                                     <p className="control has-icons-left">
-                                        <input name="postcode" className="input"
+                                        <input name="postcode"
+                                               className={`input ${this.state.errors.postcode ? "is-danger" : ""}`}
                                                type="text" defaultValue={this.state.customer.postcode}/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
                                     </p>
+                                    {this.state.errors.postcode ?
+                                        <p className="help is-danger">{this.state.errors.postcode}</p> : null}
                                 </div>
+
                             </section>
                             <footer className="modal-card-foot">
                                 <button type="submit" className="button is-success">Save changes</button>

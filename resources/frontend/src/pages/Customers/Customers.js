@@ -50,7 +50,6 @@ export default class Customers extends React.Component {
         return new Promise((resolve, reject) => {
             RequestService.put("/customer", updatedCustomer)
                 .then(response => {
-                    console.log("s")
                     if (response.status === 204) {
                         let customers = [...this.state.customers]
                         customers[updatedCustomer.id - 1] = updatedCustomer
@@ -59,14 +58,17 @@ export default class Customers extends React.Component {
                             "isNotificationActive": true,
                             "isEditModalActive": !this.state.isEditModalActive,
                         })
-                        resolve("asdf")
+                        resolve()
                     } else {
-                        console.log("w")
                         throw response.statusText
                     }
                 })
                 .catch(error => {
-                        reject(error.response.data)
+                        if (error.response) {
+                            reject(error.response)
+                        } else {
+                            reject(error)
+                        }
                     }
                 )
         })
@@ -91,8 +93,7 @@ export default class Customers extends React.Component {
 
     getNotification() {
         if (this.state.isNotificationActive) {
-            return <Notification isCentered={true}
-                                 hideNotification={this.hideNotification}>
+            return <Notification design="is-primary" hideNotification={this.hideNotification}>
                 Sucessfuly edited customer
             </Notification>
         }

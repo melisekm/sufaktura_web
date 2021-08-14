@@ -11,7 +11,7 @@ export default class Notification extends Component {
         return (
             <div className="level-item">
                 <div
-                    className="notification is-primary is-large">
+                    className={`notification ${this.props.design} is-large`}>
                     <button onClick={this.props.hideNotification} className="delete"/>
                     {this.props.children}
                 </div>

@@ -18,7 +18,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             "id" => "required",
-            "name" => "required",
+            "name" => "required|min:2|max:20",
             "address" => "required",
             "city" => "required",
             "postcode" => "required",
@@ -27,7 +27,7 @@ class CustomerController extends Controller
         $customer = Customer::find($request->input("id"));
         $customer->update($request->all());
 
-        return response(null, 204); // TODO
+        return response(null, 204);
     }
 
     public function createCustomer(Request $request)
