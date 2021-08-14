@@ -25,7 +25,9 @@ export default class ContentPage extends Component {
                             <div className="column">
                                 <div className="field has-addons is-pulled-right">
                                     <div className="control">
-                                        <button className="button is-primary">Create...</button>
+                                        <button onClick={this.props.toggleCreate}
+                                                className="button is-primary">Create...
+                                        </button>
                                     </div>
                                 </div>
                             </div>

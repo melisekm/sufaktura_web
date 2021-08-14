@@ -6,13 +6,14 @@ export default class CustomerModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "customer": {
-                "id": this.props.customer.id,
-                "name": this.props.customer.name,
-                "address": this.props.customer.address,
-                "city": this.props.customer.city,
-                "postcode": this.props.customer.postcode
-            },
+            "customer":this.props.customer,
+            // "customer": {
+            //     "id": this.props.customer ? this.props.customer.id : "",
+            //     "name": this.props.customer ? this.props.customer.name : "",
+            //     "address": this.props.customer ? this.props.customer.address : "",
+            //     "city": this.props.customer ? this.props.customer.city : "",
+            //     "postcode": this.props.customer ? this.props.customer.postcode : ""
+            // },
             "errors": {
                 "name": false,
                 "address": false,
@@ -36,7 +37,7 @@ export default class CustomerModal extends Component {
             "city": target.city.value,
             "postcode": target.postcode.value
         }
-        await this.props.onSave(customer)
+        await this.props.onSave(customer, this.props.requestMethod, this.props.onSuccess, this.props.sucessStatus)
             .catch(error => {
                 if (error.data) {
                     error = error.data
