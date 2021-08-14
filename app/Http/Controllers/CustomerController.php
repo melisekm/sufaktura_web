@@ -32,17 +32,14 @@ class CustomerController extends Controller
 
     public function createCustomer(Request $request)
     {
-        try {
-            $request->validate([
-                "name" => "required",
-                "address" => "required",
-                "city" => "required",
-                "postcode" => "required",
-            ]);
-        } catch (ValidationException $e) {
-            return response($e->getMessage(), 422);
-        }
-        (new Customer($request->all()))->save();
-        return response(null, 201);
+        $request->validate([
+            "name" => "required|min:2|max:20",
+            "address" => "required",
+            "city" => "required",
+            "postcode" => "required",
+        ]);
+        $customer = new Customer($request->all());
+        $customer->save();
+        return response($customer, 201);
     }
 }

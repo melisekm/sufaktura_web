@@ -6,14 +6,6 @@ export default class CustomerModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "customer":this.props.customer,
-            // "customer": {
-            //     "id": this.props.customer ? this.props.customer.id : "",
-            //     "name": this.props.customer ? this.props.customer.name : "",
-            //     "address": this.props.customer ? this.props.customer.address : "",
-            //     "city": this.props.customer ? this.props.customer.city : "",
-            //     "postcode": this.props.customer ? this.props.customer.postcode : ""
-            // },
             "errors": {
                 "name": false,
                 "address": false,
@@ -31,7 +23,7 @@ export default class CustomerModal extends Component {
 
         const target = event.target;
         const customer = {
-            "id": this.state.customer.id,
+            "id": this.props.customer.id,
             "name": target.name.value,
             "address": target.address.value,
             "city": target.city.value,
@@ -39,7 +31,7 @@ export default class CustomerModal extends Component {
         }
         await this.props.onSave(customer, this.props.requestMethod, this.props.onSuccess, this.props.sucessStatus)
             .catch(error => {
-                if (error.data) {
+                if (error.data && error.status !== 500) {
                     error = error.data
                     this.setState({
                         "errors": {
@@ -92,7 +84,7 @@ export default class CustomerModal extends Component {
                                     <p className="control has-icons-left">
                                         <input name="name"
                                                className={`input ${this.state.errors.name ? "is-danger" : ""}`}
-                                               type="text" defaultValue={this.state.customer.name}/>
+                                               type="text" defaultValue={this.props.customer.name}/>
                                         <span className="icon is-small is-left">
                                           <i className="fas fa-user"/>
                                         </span>
@@ -106,7 +98,7 @@ export default class CustomerModal extends Component {
                                     <p className="control has-icons-left">
                                         <input name="address"
                                                className={`input ${this.state.errors.address ? "is-danger" : ""}`}
-                                               type="text" defaultValue={this.state.customer.address}/>
+                                               type="text" defaultValue={this.props.customer.address}/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
@@ -120,7 +112,7 @@ export default class CustomerModal extends Component {
                                     <p className="control has-icons-left">
                                         <input name="city"
                                                className={`input ${this.state.errors.city ? "is-danger" : ""}`}
-                                               type="text" defaultValue={this.state.customer.city}/>
+                                               type="text" defaultValue={this.props.customer.city}/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
@@ -134,7 +126,7 @@ export default class CustomerModal extends Component {
                                     <p className="control has-icons-left">
                                         <input name="postcode"
                                                className={`input ${this.state.errors.postcode ? "is-danger" : ""}`}
-                                               type="text" defaultValue={this.state.customer.postcode}/>
+                                               type="text" defaultValue={this.props.customer.postcode}/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>

@@ -12,7 +12,9 @@ export default class Customers extends React.Component {
         this.state = {
             "isEditModalActive": false,
             "isCreateModalActive": false,
-            "isNotificationActive": false,
+            "notification": {
+                "active": false,
+            },
             "selectedCustomer": null,
             "customers": [],
             "isLoading": true
@@ -22,6 +24,7 @@ export default class Customers extends React.Component {
         this.hideNotification = this.hideNotification.bind(this);
         this.submitCustomer = this.submitCustomer.bind(this);
         this.updateCustomerInTable = this.updateCustomerInTable.bind(this);
+        this.refreshPage = this.refreshPage.bind(this);
     }
 
     componentDidMount() {
@@ -56,12 +59,21 @@ export default class Customers extends React.Component {
 
     hideNotification() {
         this.setState({
-            "isNotificationActive": false
+            "notification": {
+                "active":false
+            }
         })
     }
 
-    refreshPage(){
-        window.location.reload()
+    refreshPage(newCustomer) {
+        this.setState(prevState => ({
+            "customers": [...prevState.customers, newCustomer],
+            "notification": {
+                "active": true,
+                "text": "Sucessfully created new customer."
+            },
+            "isCreateModalActive": !prevState.isCreateModalActive,
+        }))
     }
 
     updateCustomerInTable(updatedCustomer) {
@@ -69,7 +81,10 @@ export default class Customers extends React.Component {
         customers[updatedCustomer.id - 1] = updatedCustomer
         this.setState({
             "customers": customers,
-            "isNotificationActive": true,
+            "notification": {
+                "active": true,
+                "text": "Sucessfuly edited customer."
+            },
             "isEditModalActive": !this.state.isEditModalActive,
         })
     }
@@ -80,14 +95,15 @@ export default class Customers extends React.Component {
             requestMethod("/customer", updatedCustomer)
                 .then(response => {
                     if (response.status === sucessStatus) {
-                        onSucessMethod(updatedCustomer)
+                        onSucessMethod(response.data)
                         resolve()
                     } else {
                         throw response.statusText
                     }
                 })
                 .catch(error => {
-                    console.log(error)
+                        console.log(error)
+                        console.log(error.response)
                         if (error.response) {
                             reject(error.response)
                         } else {
@@ -122,9 +138,9 @@ export default class Customers extends React.Component {
 
 
     getNotification() {
-        if (this.state.isNotificationActive) {
+        if (this.state.notification.active) {
             return <Notification design="is-primary" hideNotification={this.hideNotification}>
-                Sucessfuly edited customer
+                {this.state.notification.text}
             </Notification>
         }
         return null
