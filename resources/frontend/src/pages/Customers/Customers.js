@@ -10,7 +10,7 @@ export default class Customers extends React.Component {
         super(props);
         this.customerColumns = ["ID", "Name", "Address", "Details"]
         this.state = {
-            "isModalActive": false,
+            "isEditModalActive": false,
             "isNotificationActive": false,
             "selectedCustomer": null,
             "customers": [],
@@ -18,7 +18,7 @@ export default class Customers extends React.Component {
         }
         this.toggleModal = this.toggleModal.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
-        this.saveCustomer = this.saveCustomer.bind(this);
+        this.updateCustomer = this.updateCustomer.bind(this);
     }
 
     componentDidMount() {
@@ -34,7 +34,7 @@ export default class Customers extends React.Component {
     toggleModal(rowInfo) {
         const selectedCustomer = rowInfo ? this.state.customers[rowInfo[0] - 1] : null
         this.setState({
-            "isModalActive": !this.state.isModalActive,
+            "isEditModalActive": !this.state.isEditModalActive,
             "selectedCustomer": selectedCustomer
         })
     }
@@ -45,21 +45,31 @@ export default class Customers extends React.Component {
         })
     }
 
-    saveCustomer(updatedCustomer) {
-        RequestService.put("/customer", updatedCustomer)
-            .then(response => {
-                if (response.status === 204) {
-                    let customers = [...this.state.customers]
-                    customers[updatedCustomer.id - 1] = updatedCustomer
-                    this.setState({"customers": customers, "isNotificationActive": true})
-                } else {
-                    throw response.statusText
-                }
-            })
-            .catch(error => {
-                    console.log(error) // TODO
-                }
-            )
+
+    updateCustomer(updatedCustomer) {
+        return new Promise((resolve, reject) => {
+            RequestService.put("/customer", updatedCustomer)
+                .then(response => {
+                    console.log("s")
+                    if (response.status === 204) {
+                        let customers = [...this.state.customers]
+                        customers[updatedCustomer.id - 1] = updatedCustomer
+                        this.setState({
+                            "customers": customers,
+                            "isNotificationActive": true,
+                            "isEditModalActive": !this.state.isEditModalActive,
+                        })
+                        resolve("asdf")
+                    } else {
+                        console.log("w")
+                        throw response.statusText
+                    }
+                })
+                .catch(error => {
+                        reject(error.response.data)
+                    }
+                )
+        })
     }
 
     getTableItems() {
@@ -71,9 +81,9 @@ export default class Customers extends React.Component {
     }
 
     getModalEditWindow() {
-        if (this.state.isModalActive) {
-            return <CustomerModal isActive={this.state.isModalActive} modalToggle={this.toggleModal}
-                                  onSave={this.saveCustomer}
+        if (this.state.isEditModalActive) {
+            return <CustomerModal isActive={this.state.isEditModalActive} modalToggle={this.toggleModal}
+                                  onSave={this.updateCustomer}
                                   customer={this.state.selectedCustomer}/>
         }
         return null

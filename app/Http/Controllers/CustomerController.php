@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class CustomerController extends Controller
@@ -15,17 +16,14 @@ class CustomerController extends Controller
 
     public function updateCustomer(Request $request): \Illuminate\Http\Response
     {
-        try {
-            $request->validate([
-                "id" => "required",
-                "name" => "required",
-                "address" => "required",
-                "city" => "required",
-                "postcode" => "required",
-            ]);
-        } catch (ValidationException $e) {
-            return response(422, $e->getMessage());
-        }
+        $request->validate([
+            "id" => "required",
+            "name" => "required",
+            "address" => "required",
+            "city" => "required",
+            "postcode" => "required",
+        ]);
+
         $customer = Customer::find($request->input("id"));
         $customer->update($request->all());
 

@@ -16,26 +16,27 @@ export default class CustomerModal extends Component {
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
 
-    onFormSubmit(event) {
-        const target = event.target;
-        this.setState(
-            (prevState) => ({
-                "customer": {
-                    "id": prevState.customer.id,
-                    "name": target.name.value,
-                    "address": target.address.value,
-                    "city": target.city.value,
-                    "postcode": target.postcode.value
-                }
-            }),
-            () => this.saveAndHide()
-        )
+    async onFormSubmit(event) {
         event.preventDefault()
+
+        const target = event.target;
+        const customer = {
+            "id": this.state.customer.id,
+            "name": target.name.value,
+            "address": target.address.value,
+            "city": target.city.value,
+            "postcode": target.postcode.value
+        }
+        await this.props.onSave(customer)
+            .catch(error => {
+                console.log(error)
+            })
     }
 
-    saveAndHide() {
-        this.props.modalToggle()
-        this.props.onSave(this.state.customer)
+    submitForm() {
+        if (!this.props.onSave(this.state.customer)) {
+            alert("u done fucked up")
+        }
     }
 
     render() {

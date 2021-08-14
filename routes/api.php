@@ -19,6 +19,3 @@ Route::put("v1/customer", [CustomerController::class, "updateCustomer"]);
 Route::get('v1/customers', [CustomerController::class, 'getAllCustomers']);
 Route::post("v1/customer", [CustomerController::class, "createCustomer"]);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
