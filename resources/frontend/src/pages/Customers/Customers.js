@@ -24,7 +24,7 @@ export default class Customers extends React.Component {
         this.hideNotification = this.hideNotification.bind(this);
         this.submitCustomer = this.submitCustomer.bind(this);
         this.updateCustomerInTable = this.updateCustomerInTable.bind(this);
-        this.refreshPage = this.refreshPage.bind(this);
+        this.addCustomerToTable = this.addCustomerToTable.bind(this);
     }
 
     componentDidMount() {
@@ -65,7 +65,7 @@ export default class Customers extends React.Component {
         })
     }
 
-    refreshPage(newCustomer) {
+    addCustomerToTable(newCustomer) {
         this.setState(prevState => ({
             "customers": [...prevState.customers, newCustomer],
             "notification": {
@@ -122,7 +122,7 @@ export default class Customers extends React.Component {
         )
     }
 
-    getModalWindow(isModalActive, toggleModal, onSuccessMethod, expectedSucessStatus, requestMethod) {
+    getModalWindow(isModalActive, toggleModal, onSuccessMethod, expectedSucessStatus, requestMethod, hasDeleteBtn) {
         if (isModalActive) {
             return <CustomerModal isActive={isModalActive}
                                   modalToggle={toggleModal}
@@ -131,6 +131,7 @@ export default class Customers extends React.Component {
                                   requestMethod={requestMethod}
                                   onSuccess={onSuccessMethod}
                                   sucessStatus={expectedSucessStatus}
+                                  hasDeleteBtn={hasDeleteBtn}
             />
         }
         return null
@@ -156,8 +157,8 @@ export default class Customers extends React.Component {
                              isLoading={this.state.isLoading}
                              toggleCreate={this.toggleCreateModal}
                 />
-                {this.getModalWindow(this.state.isEditModalActive, this.toggleEditModal, this.updateCustomerInTable, 201, RequestService.put)}
-                {this.getModalWindow(this.state.isCreateModalActive, this.toggleCreateModal, this.refreshPage, 201, RequestService.post)}
+                {this.getModalWindow(this.state.isEditModalActive, this.toggleEditModal, this.updateCustomerInTable, 201, RequestService.put, true)}
+                {this.getModalWindow(this.state.isCreateModalActive, this.toggleCreateModal, this.addCustomerToTable, 201, RequestService.post, false)}
 
             </React.Fragment>
         )

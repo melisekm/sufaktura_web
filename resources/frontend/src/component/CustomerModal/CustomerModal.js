@@ -66,6 +66,8 @@ export default class CustomerModal extends Component {
     }
 
     render() {
+        const delBtn = this.props.hasDeleteBtn ?
+            <button className="button is-danger del ml-auto">Delete Customer</button> : null
         return (
             <React.Fragment>
                 <form onSubmit={this.onFormSubmit}>
@@ -139,6 +141,7 @@ export default class CustomerModal extends Component {
                             <footer className="modal-card-foot">
                                 <button type="submit" className="button is-success">Save changes</button>
                                 <button onClick={this.props.modalToggle} className="button">Cancel</button>
+                                {delBtn}
                             </footer>
                         </div>
                     </div>

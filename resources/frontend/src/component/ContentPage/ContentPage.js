@@ -22,15 +22,9 @@ export default class ContentPage extends Component {
                                 <p className="subtitle is-5">{this.props.description}</p>
                                 <p className="subtitle is-6">Found {this.props.tableData.length} records</p>
                             </div>
-                            <div className="column">
-                                <div className="field has-addons is-pulled-right">
-                                    <div className="control">
-                                        <button onClick={this.props.toggleCreate}
-                                                className="button is-primary">Create...
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            <button onClick={this.props.toggleCreate}
+                                    className="button is-primary ml-auto">Create...
+                            </button>
                         </div>
                     </div>
                     {this.getLoadingOrTable()}
