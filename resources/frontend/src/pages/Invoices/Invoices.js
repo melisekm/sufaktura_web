@@ -20,7 +20,7 @@ export default class Invoices extends React.Component {
 
     render() {
         const invoicesTableItems = this.invoicesData.map(
-            (invoicesInfo) => <TableItem key={invoicesInfo[0]} data={invoicesInfo} modalToggle={this.toggleModal}/>
+            (invoicesInfo) => <TableItem key={invoicesInfo[0]} data={invoicesInfo} tableCell={invoicesInfo} modalToggle={this.toggleModal}/>
         )
         return (
             <div>

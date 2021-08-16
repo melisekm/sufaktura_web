@@ -20,7 +20,8 @@ export default class Goods extends React.Component {
 
     render() {
         const goodsTableItems = this.goodsData.map(
-            (goodsInfo) => <TableItem key={goodsInfo[0]} data={goodsInfo} modalToggle={this.toggleModal}/>
+            (goodsInfo) => <TableItem key={goodsInfo[0]} data={goodsInfo} tableCell={goodsInfo}
+                                      modalToggle={this.toggleModal}/>
         )
         return (
             <div>

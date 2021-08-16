@@ -1,18 +1,22 @@
 import 'bulma/css/bulma.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
 import '@fortawesome/fontawesome-free/css/all.css'
 import 'animate.css/animate.min.css';
+import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './pages/App/App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
+import {Provider} from "react-redux";
+import store from "./redux/store";
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );

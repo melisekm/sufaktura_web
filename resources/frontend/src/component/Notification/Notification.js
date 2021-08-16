@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import "./Notification.css"
+import {useDispatch} from "react-redux";
 
-export default class Notification extends Component {
-    constructor(props) {
-        super(props);
-        setTimeout(this.props.hideNotification, 2000)
-    }
-
-    render() {
-        return (
-            <div className="level-item">
-                <div
-                    className={`notification ${this.props.design} is-large`}>
-                    <button onClick={this.props.hideNotification} className="delete"/>
-                    {this.props.children}
-                </div>
+const Notification = (props) => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        setTimeout(dispatch, 2000, props.hideNotification()) // TODO SEE ERROR
+    }, [dispatch]);
+    return (
+        <div className="level-item">
+            <div
+                className={`notification ${props.design} is-large`}>
+                <button onClick={(e) => dispatch(props.hideNotification())} className="delete"/>
+                {props.children}
             </div>
-        )
-    }
-}
+        </div>
+    );
+};
+
+export default Notification;

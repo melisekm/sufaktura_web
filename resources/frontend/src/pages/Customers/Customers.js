@@ -4,10 +4,13 @@ import ContentPage from "../../component/ContentPage/ContentPage";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
 import Notification from "../../component/Notification/Notification";
 import RequestService from '../../utils/request-service';
+import CustomerModalWindow from "../../component/CustomerModal/CustomerModalWindow";
 
 export default class Customers extends React.Component {
+
     constructor(props) {
         super(props);
+
         this.customerColumns = ["ID", "Name", "Address", "Details"]
         this.state = {
             "isEditModalActive": false,
@@ -26,6 +29,7 @@ export default class Customers extends React.Component {
         this.updateCustomerInTable = this.updateCustomerInTable.bind(this);
         this.addCustomerToTable = this.addCustomerToTable.bind(this);
     }
+
 
     componentDidMount() {
         RequestService.get("/customers").then(r => {
@@ -60,7 +64,7 @@ export default class Customers extends React.Component {
     hideNotification() {
         this.setState({
             "notification": {
-                "active":false
+                "active": false
             }
         })
     }
@@ -159,7 +163,7 @@ export default class Customers extends React.Component {
                 />
                 {this.getModalWindow(this.state.isEditModalActive, this.toggleEditModal, this.updateCustomerInTable, 201, RequestService.put, true)}
                 {this.getModalWindow(this.state.isCreateModalActive, this.toggleCreateModal, this.addCustomerToTable, 201, RequestService.post, false)}
-
+                <CustomerModalWindow/>
             </React.Fragment>
         )
     }
