@@ -8,33 +8,39 @@ export const customersSlice = createSlice({
         creatingCustomerLoadingStatus: null,
         updatingCustomerLoadingStatus: null,
         deletingCustomerLoadingStatus: null,
+
         customers: [],
 
-        notificationText: "",
-        isNotificationActive: false,
+        notification: {
+            text: "",
+            isActive: false,
+            design: null,
+        },
 
-        isModalActive: false,
-        modalSubmitMethod: null,
-        selectedCustomer: null,
+        modal: {
+            isActive: false,
+            submitMethod: null,
+            selectedCustomer: null,
+        },
     },
     reducers: {
         toggleModal: (state, action) => {
-            state.isModalActive = !state.isModalActive
-            if (state.isModalActive) {
-                state.selectedCustomer = action.payload.selectedCustomer
-                state.modalSubmitMethod = action.payload.submitMethod
+            state.modal.isActive = !state.modal.isActive
+            if (state.modal.isActive) {
+                state.modal.selectedCustomer = action.payload.selectedItem
+                state.modal.submitMethod = action.payload.submitMethod
             }
         },
         closeNotification: (state) => {
-            state.isNotificationActive = false
+            state.notification.isActive = false
         },
         activateNotification: (state) => {
-            state.isNotificationActive = true
+            state.notification.isActive = true
         },
         activateServerErrorNotification: (state) => {
-            state.notificationText = "INTERNAL SERVER ERROR, TRY AGAIN LATER"
-            state.notificationDesign = "is-danger"
-            state.isNotificationActive = true
+            state.notification.text = "INTERNAL SERVER ERROR, TRY AGAIN LATER"
+            state.notification.design = "is-danger"
+            state.notification.isActive = true
         }
     },
     extraReducers: {
@@ -53,9 +59,9 @@ export const customersSlice = createSlice({
         [createCustomer.fulfilled]: (state, action) => {
             state.customers.push(action.payload.data)
             state.creatingCustomerLoadingStatus = 'success'
-            state.notificationText = "Sucessfully created a new customer."
-            state.notificationDesign = "is-primary"
-            state.isNotificationActive = true
+            state.notification.text = "Sucessfully created a new customer."
+            state.notification.design = "is-primary"
+            state.notification.isActive = true
         },
         [createCustomer.pending]: (state, action) => {
             state.updatingCustomerLoadingStatus = 'loading'
@@ -69,9 +75,9 @@ export const customersSlice = createSlice({
             const index = state.customers.findIndex(x => x.id === action.payload.data.id)
             state.customers[index] = action.payload.data
             state.updatingCustomerLoadingStatus = 'success'
-            state.notificationText = "Sucessfully edited customer."
-            state.notificationDesign = "is-primary"
-            state.isNotificationActive = true
+            state.notification.text = "Sucessfully edited customer."
+            state.notification.design = "is-primary"
+            state.notification.isActive = true
         },
         [updateCustomer.pending]: (state, action) => {
             state.updatingCustomerLoadingStatus = 'loading'
@@ -84,9 +90,9 @@ export const customersSlice = createSlice({
         [deleteCustomer.fulfilled]: (state, action) => {
             state.customers.splice(action.payload.data.id, 1)
             state.deletingCustomerLoadingStatus = 'success'
-            state.notificationText = "Sucessfully deleted customer."
-            state.notificationDesign = "is-primary"
-            state.isNotificationActive = true
+            state.notification.text = "Sucessfully deleted customer."
+            state.notification.design = "is-primary"
+            state.notification.isActive = true
         },
         [updateCustomer.pending]: (state, action) => {
             state.updatingCustomerLoadingStatus = 'loading'

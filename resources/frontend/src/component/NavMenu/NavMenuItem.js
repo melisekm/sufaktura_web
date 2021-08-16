@@ -1,26 +1,13 @@
 import React from 'react';
 
-export default class NavMenuItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isActive: false
-        }
-    }
 
-    componentDidMount() {
-        if (this.props.link === window.location.pathname) {
-            this.setState({
-                isActive: true
-            })
-        }
-    }
+const NavMenuItem = (props) => {
+    const highlightItem = props.link === window.location.pathname
+    return (
+        <a className={`navbar-item ${highlightItem ? "is-active" : ""}`} href={props.link}>
+            {props.children}
+        </a>
+    );
+};
 
-    render() {
-        return (
-            <a className={`navbar-item ${this.state.isActive ? "is-active" : ""}`} href={this.props.link}>
-                {this.props.children}
-            </a>
-        );
-    }
-}
+export default NavMenuItem;

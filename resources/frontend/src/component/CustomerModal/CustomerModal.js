@@ -17,23 +17,25 @@ const onFormSubmit = async (event, dispatch, submitDetails, setErrors) => {
         delete customer.id
     }
 
-    dispatch(submitDetails.requestMethod(customer)).then(() => {
-        dispatch(toggleModal())
-    }).catch(error => {
-        console.log(error)
-        if (error.data && error.status !== 500) {
-            error = error.data
-            setErrors({
-                "name": error.name,
-                "address": error.address,
-                "city": error.city,
-                "postcode": error.postcode
-            })
-        } else {
-            console.log(500)
-            dispatch(activateServerErrorNotification()) // TODO
-        }
-    })
+    dispatch(submitDetails.requestMethod(customer))
+        .then(() => {
+            dispatch(toggleModal())
+        })
+        .catch(error => {
+            console.log(error)
+            if (error.data && error.status !== 500) {
+                error = error.data
+                setErrors({
+                    "name": error.name,
+                    "address": error.address,
+                    "city": error.city,
+                    "postcode": error.postcode
+                })
+            } else {
+                console.log(500)
+                dispatch(activateServerErrorNotification()) // TODO
+            }
+        })
 }
 
 const CustomerModalWindow = () => {
@@ -44,9 +46,9 @@ const CustomerModalWindow = () => {
         "city": false,
         "postcode": false
     })
-    const isModalActive = useSelector(state => state.customers.isModalActive)
-    const customer = useSelector(state => state.customers.selectedCustomer)
-    const modalSubmitMethodType = useSelector(state => state.customers.modalSubmitMethod)
+    const isModalActive = useSelector(state => state.customers.modal.isActive)
+    const customer = useSelector(state => state.customers.modal.selectedCustomer)
+    const modalSubmitMethodType = useSelector(state => state.customers.modal.submitMethod)
     let submitDetails
     if (modalSubmitMethodType === "EDIT") {
         submitDetails = {

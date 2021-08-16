@@ -3,17 +3,17 @@ import {createSlice} from "@reduxjs/toolkit";
 export const appSlice = createSlice({
     name: "app",
     initialState: {
-        isNotificationActive: false,
+        // activePage: "/",
 
     },
     reducers: {
-        // toggleNotification: (state, action) => {
-        //     state.isNotificationActive = !state.isNotificationActive
+        // setActivePage: (state,action)=>{
+        //     state.activePage = action.payload
         // }
     },
     extraReducers: {},
 })
 
-// export const {toggleNotification} = appSlice.actions
+// export const {setActivePage} = appSlice.actions
 
 export default appSlice.reducer

@@ -20,7 +20,7 @@ const TableItem = (props) => {
             {getDataCells(props.tableCell)}
             <td>
                 <button onClick={(e) => dispatch(props.modalToggle({
-                    "selectedCustomer": dataRef,
+                    "selectedItem": dataRef,
                     "submitMethod": "EDIT"
                 }))}
                         className="button is-small is-text">
