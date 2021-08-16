@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {deleteCustomer, getCustomers, updateCustomer, createCustomer} from "../thunks/customers-thunks";
 
 const initialModalErrors = {
     "name": false,
