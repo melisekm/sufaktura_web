@@ -39,6 +39,7 @@ export const updateCustomer = createAsyncThunk(
     }
 )
 
+
 export const deleteCustomer = createAsyncThunk(
     "customers/deleteCustomer",
     async (id, {rejectWithValue}) => {

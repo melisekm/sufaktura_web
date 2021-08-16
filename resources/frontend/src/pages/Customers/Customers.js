@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import ContentPage from "../../component/ContentPage/ContentPage";
 import {useDispatch, useSelector} from "react-redux";
-import {getCustomers} from "../../redux/thunks/customers-thunks";
+import {getCustomers} from "../../redux/thunks/customerThunks";
 import TableItem from "../../component/TableItem/TableItem";
 import {closeNotification, toggleModal} from "../../redux/slices/customers";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";

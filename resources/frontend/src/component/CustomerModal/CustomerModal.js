@@ -1,11 +1,37 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {activateServerErrorNotification, toggleModal} from "../../redux/slices/customers";
-import {createCustomer, updateCustomer} from "../../redux/thunks/customers-thunks";
+import {toggleModal, toggleNotification} from "../../redux/slices/customers";
+import {createCustomer, updateCustomer} from "../../redux/thunks/customerThunks";
 
-const onFormSubmit = async (event, dispatch, submitDetails, setErrors) => {
+const createSubmitDetails = (customerId, modalSubmitMethodType) => {
+    let submitDetails
+    if (modalSubmitMethodType === "EDIT") {
+        submitDetails = {
+            "requestMethod": updateCustomer,
+            "sucessStatus": 201,
+            "id": customerId,
+            "notification": {
+                "text": "Customer sucessfully edited.",
+                "design": "is-primary"
+            }
+        }
+    } else if (modalSubmitMethodType === "CREATE") {
+        submitDetails = {
+            "requestMethod": createCustomer,
+            "sucessStatus": 201,
+            "notification": {
+                "text": "Customer sucessfully created.",
+                "design": "is-primary"
+            }
+        }
+    }
+    return submitDetails
+}
+
+const onFormSubmit = (event, dispatch, submitDetails) => {
     event.preventDefault()
     const target = event.target;
+
     const customer = {
         "id": submitDetails.id,
         "name": target.name.value,
@@ -20,54 +46,43 @@ const onFormSubmit = async (event, dispatch, submitDetails, setErrors) => {
     dispatch(submitDetails.requestMethod(customer))
         .then(() => {
             dispatch(toggleModal())
+            dispatch(toggleNotification(submitDetails.notification))
         })
         .catch(error => {
-            console.log(error)
+            console.log("CM", error)
             if (error.data && error.status !== 500) {
-                error = error.data
-                setErrors({
-                    "name": error.name,
-                    "address": error.address,
-                    "city": error.city,
-                    "postcode": error.postcode
-                })
+                console.log("N500", error.data)
             } else {
-                console.log(500)
-                dispatch(activateServerErrorNotification()) // TODO
+                console.log("500", error.data)
+                const notification = {
+                    "text": "Internal Server Error, Try again later.",
+                    "design": "is-danger",
+                }
+                dispatch(toggleNotification(notification))
             }
         })
 }
 
+const deleteCustomer = (event) => {
+    event.preventDefault()
+    console.log("del pressed")
+}
+
 const CustomerModalWindow = () => {
     const dispatch = useDispatch()
-    const [errors, setErrors] = useState({
-        "name": false,
-        "address": false,
-        "city": false,
-        "postcode": false
-    })
     const isModalActive = useSelector(state => state.customers.modal.isActive)
     const customer = useSelector(state => state.customers.modal.selectedCustomer)
     const modalSubmitMethodType = useSelector(state => state.customers.modal.submitMethod)
-    let submitDetails
-    if (modalSubmitMethodType === "EDIT") {
-        submitDetails = {
-            "requestMethod": updateCustomer,
-            "sucessStatus": 201,
-            "id": customer.id
-        }
-    } else if (modalSubmitMethodType === "CREATE") {
-        submitDetails = {
-            "requestMethod": createCustomer,
-            "sucessStatus": 201,
-        }
-    }
+    const loading = useSelector(state => state.customers.modalLoadingStatus)
+    const errors = useSelector(state => state.customers.modalErrors)
+    const submitDetails = createSubmitDetails(customer.id, modalSubmitMethodType)
+
 
     const delBtn = modalSubmitMethodType === "EDIT" ?
-        <button className="button is-danger ml-auto">Delete Customer</button> : null
+        <button onClick={(e) => deleteCustomer(e)} className="button is-danger ml-auto">Delete Customer</button> : null
     return (
         <React.Fragment>
-            <form onSubmit={(e) => onFormSubmit(e, dispatch, submitDetails, setErrors)}>
+            <form onSubmit={(e) => onFormSubmit(e, dispatch, submitDetails)}>
                 <div className={`modal ${isModalActive ? "is-active" : ""}`}>
                     <div className="modal-background"/>
                     <div className="modal-card">
@@ -135,7 +150,10 @@ const CustomerModalWindow = () => {
 
                         </section>
                         <footer className="modal-card-foot">
-                            <button type="submit" className="button is-success">Save changes</button>
+                            {
+                                loading === "loading" ? <button className="button is-loading is-link">Loading</button> :
+                                    <button type="submit" className="button is-success">Save changes</button>
+                            }
                             <button onClick={(e) => dispatch(toggleModal())} className="button">Cancel</button>
                             {delBtn}
                         </footer>

@@ -1,15 +1,22 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {deleteCustomer, getCustomers, updateCustomer, createCustomer} from "../thunks/customers-thunks";
 
+const initialModalErrors = {
+    "name": false,
+    "address": false,
+    "city": false,
+    "postcode": false
+}
+
 export const customersSlice = createSlice({
     name: "customers",
     initialState: {
         tableLoadingStatus: null,
-        creatingCustomerLoadingStatus: null,
-        updatingCustomerLoadingStatus: null,
-        deletingCustomerLoadingStatus: null,
+        modalLoadingStatus: null,
 
         customers: [],
+
+        modalErrors: initialModalErrors,
 
         notification: {
             text: "",
@@ -24,90 +31,83 @@ export const customersSlice = createSlice({
         },
     },
     reducers: {
+        internalServerError: (state, action) => {
+            console.log("ISE")
+        },
+
+        activateServerErrorNotification: (state) => {
+            state.notification.text = "INTERNAL SERVER ERROR, TRY AGAIN LATER"
+            state.notification.design = "is-danger"
+            state.notification.isActive = true
+        },
+
+        toggleNotification: (state, action) => {
+            state.notification.text = action.payload.text
+            state.notification.design = action.payload.design
+            state.notification.isActive = true
+        },
+        closeNotification: (state) => {
+            state.notification.isActive = false
+        },
+
+
+        tableLoading: (state, action) => {
+            state.tableLoadingStatus = "loading"
+        },
+
+        modalWindowLoading: (state) => {
+            state.modalLoadingStatus = "loading"
+        },
+
         toggleModal: (state, action) => {
             state.modal.isActive = !state.modal.isActive
             if (state.modal.isActive) {
                 state.modal.selectedCustomer = action.payload.selectedItem
                 state.modal.submitMethod = action.payload.submitMethod
             }
+            state.modalErrors = initialModalErrors
+            state.modalLoadingStatus = null
         },
-        closeNotification: (state) => {
-            state.notification.isActive = false
+
+        customersGetSuccess: (state, action) => {
+            state.tableLoadingStatus = "success"
+            state.customers = action.payload
         },
-        activateNotification: (state) => {
-            state.notification.isActive = true
+        customersGetFailure: (state, action) => {
+            state.tableLoadingStatus = null
         },
-        activateServerErrorNotification: (state) => {
-            state.notification.text = "INTERNAL SERVER ERROR, TRY AGAIN LATER"
-            state.notification.design = "is-danger"
-            state.notification.isActive = true
+
+        customerUpdatedSuccess: (state, action) => {
+            const index = state.customers.findIndex(x => x.id === action.payload.id)
+            state.customers[index] = action.payload
+            state.modalLoadingStatus = "success"
+        },
+
+        createCustomerSuccess: (state, action) => {
+            state.customers.push(action.payload)
+            state.modalLoadingStatus = "success"
+        },
+
+        modalSubmitFailure: (state, action) => {
+            state.modalLoadingStatus = null
+            state.modalErrors = action.payload.data
         }
-    },
-    extraReducers: {
-
-        [getCustomers.pending]: (state, action) => {
-            state.tableLoadingStatus = 'loading'
-        },
-        [getCustomers.fulfilled]: (state, {payload}) => {
-            state.customers = payload.data
-            state.tableLoadingStatus = 'success'
-        },
-        [getCustomers.rejected]: (state, action) => {
-            state.tableLoadingStatus = 'failed'
-        },
-
-        [createCustomer.fulfilled]: (state, action) => {
-            state.customers.push(action.payload.data)
-            state.creatingCustomerLoadingStatus = 'success'
-            state.notification.text = "Sucessfully created a new customer."
-            state.notification.design = "is-primary"
-            state.notification.isActive = true
-        },
-        [createCustomer.pending]: (state, action) => {
-            state.updatingCustomerLoadingStatus = 'loading'
-        },
-        [createCustomer.rejected]: (state, action) => {
-            state.creatingCustomerLoadingStatus = 'failed'
-            throw action.payload // TDOO namiesto throw nastavit errory ako state
-        },
-
-        [updateCustomer.fulfilled]: (state, action) => {
-            const index = state.customers.findIndex(x => x.id === action.payload.data.id)
-            state.customers[index] = action.payload.data
-            state.updatingCustomerLoadingStatus = 'success'
-            state.notification.text = "Sucessfully edited customer."
-            state.notification.design = "is-primary"
-            state.notification.isActive = true
-        },
-        [updateCustomer.pending]: (state, action) => {
-            state.updatingCustomerLoadingStatus = 'loading'
-        },
-        [updateCustomer.rejected]: (state, action) => {
-            state.updatingCustomerLoadingStatus = 'failed'
-            throw action.payload // TDOO namiesto throw nastavit errory ako state
-        },
-
-        [deleteCustomer.fulfilled]: (state, action) => {
-            state.customers.splice(action.payload.data.id, 1)
-            state.deletingCustomerLoadingStatus = 'success'
-            state.notification.text = "Sucessfully deleted customer."
-            state.notification.design = "is-primary"
-            state.notification.isActive = true
-        },
-        [updateCustomer.pending]: (state, action) => {
-            state.updatingCustomerLoadingStatus = 'loading'
-        },
-        [deleteCustomer.rejected]: (state, action) => {
-            state.deletingCustomerLoadingStatus = 'failed'
-        },
     },
 })
 
 export const {
+    internalServerError,
     toggleModal,
+    toggleNotification,
     closeNotification,
-    activateNotification,
-    activateServerErrorNotification
+    tableLoading,
+    activateServerErrorNotification,
+    modalWindowLoading,
+    customersGetSuccess,
+    customersGetFailure,
+    customerUpdatedSuccess,
+    createCustomerSuccess,
+    modalSubmitFailure
 } = customersSlice.actions
 
 export default customersSlice.reducer
