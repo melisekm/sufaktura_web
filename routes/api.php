@@ -18,4 +18,4 @@ use App\Http\Controllers\CustomerController;
 Route::put("v1/customer", [CustomerController::class, "updateCustomer"]);
 Route::get('v1/customers', [CustomerController::class, 'getAllCustomers']);
 Route::post("v1/customer", [CustomerController::class, "createCustomer"]);
-
+Route::delete("v1/customer/{id}", [CustomerController::class, "deleteCustomer"]);

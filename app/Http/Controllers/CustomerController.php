@@ -41,4 +41,14 @@ class CustomerController extends Controller
         $customer->update($request->all());
         return response($customer, 201);
     }
+
+    public function deleteCustomer($id)
+    {
+        $deleted = Customer::destroy($id);
+        if ($deleted) {
+            return response(null, 200);
+        } else {
+            return response(["id" => $id, "error" => "This customer doesn't exist."], 404);
+        }
+    }
 }
