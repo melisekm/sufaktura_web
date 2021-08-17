@@ -6,6 +6,7 @@ import TableItem from "../../component/TableItem/TableItem";
 import {activateServerErrorNotification, closeNotification, toggleModal} from "../../redux/slices/customers";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
 import Notification from "../../component/Notification/Notification";
+import {useLocation} from "react-router-dom";
 
 const getTableItems = (customers) => {
     return customers.map(
@@ -48,6 +49,8 @@ const CustomersPage = () => {
     const isNotificationActive = useSelector(state => state.customers.notification.isActive)
     const notificationText = useSelector(state => state.customers.notification.text)
     const notificationDesign = useSelector(state => state.customers.notification.design)
+    const location = useLocation()
+    console.log(location)
 
 
     useEffect(() => {

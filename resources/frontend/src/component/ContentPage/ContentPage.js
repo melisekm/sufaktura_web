@@ -2,6 +2,7 @@ import React from 'react';
 import Table from "../Table/Table";
 import LoadingButton from "../Button/LoadingButton";
 import {useDispatch} from "react-redux";
+import Pagination from "../Pagination/Pagination";
 
 
 const getLoadingOrTable = (isLoading, tableColumns, tableData) => {
@@ -30,6 +31,7 @@ const ContentPage = (props) => {
                     </div>
                 </div>
                 {getLoadingOrTable(props.isLoading, props.tableColumns, props.tableData)}
+                <Pagination/>
             </div>
         </div>
     );

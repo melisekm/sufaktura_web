@@ -11,13 +11,11 @@ class CustomerController extends Controller
 {
     public function getAllCustomers()
     {
-        sleep(1);
         return Customer::orderBy("id", "ASC")->get();
     }
 
     public function createCustomer(Request $request)
     {
-        sleep(1);
         $request->validate([
             "name" => "required|min:2|max:35",
             "address" => "required",
@@ -31,8 +29,6 @@ class CustomerController extends Controller
 
     public function updateCustomer(Request $request)
     {
-        sleep(2);
-
         $request->validate([
             "id" => "required",
             "name" => "required|min:2|max:35",
@@ -48,7 +44,6 @@ class CustomerController extends Controller
 
     public function deleteCustomer($id)
     {
-        sleep(2);
         $deleted = Customer::destroy($id);
         if ($deleted) {
             return response(null, 200);

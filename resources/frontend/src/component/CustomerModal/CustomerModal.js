@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     toggleModal,
@@ -68,6 +68,13 @@ const CustomerModalWindow = () => {
     const isDeleteModalActive = useSelector(state => state.customers.deleteModal.isActive)
     const submitDetails = createSubmitDetails(propsCustomer.id, modalSubmitMethodType)
 
+    const handleKeyDown = ((event) => {
+        if (event.key === "Escape") dispatch(toggleModal())
+    })
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    })
 
     const closeModal = (event) => {
         event.preventDefault()
@@ -78,6 +85,7 @@ const CustomerModalWindow = () => {
         event.preventDefault()
         dispatch(toggleDeleteModal())
     }
+
 
     const handleInputChange = (event) => {
         let target = event.target

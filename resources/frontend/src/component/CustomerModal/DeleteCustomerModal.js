@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     activateServerErrorNotification,
     openNotification,
@@ -27,6 +27,14 @@ const DeleteCustomerModal = () => {
     const dispatch = useDispatch()
     const customerId = useSelector(state => state.customers.modal.selectedCustomer.id)
     const loading = useSelector(state => state.customers.modalLoadingStatus)
+
+    const handleKeyDown = ((event) => {
+        if (event.key === "Escape") dispatch(toggleDeleteModal())
+    })
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    })
 
     let buttons
     if (loading === "loading") {
