@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {toggleModal, toggleNotification} from "../../redux/slices/customers";
+import {toggleModal, openNotification, activateServerErrorNotification} from "../../redux/slices/customers";
 import {createCustomer, updateCustomer} from "../../redux/thunks/customerThunks";
 
 const createSubmitDetails = (customerId, modalSubmitMethodType) => {
@@ -46,7 +46,7 @@ const onFormSubmit = (event, dispatch, submitDetails) => {
     dispatch(submitDetails.requestMethod(customer))
         .then(() => {
             dispatch(toggleModal())
-            dispatch(toggleNotification(submitDetails.notification))
+            dispatch(openNotification(submitDetails.notification))
         })
         .catch(error => {
             console.log("CM", error)
@@ -54,11 +54,7 @@ const onFormSubmit = (event, dispatch, submitDetails) => {
                 console.log("N500", error.data)
             } else {
                 console.log("500", error.data)
-                const notification = {
-                    "text": "Internal Server Error, Try again later.",
-                    "design": "is-danger",
-                }
-                dispatch(toggleNotification(notification))
+                dispatch(dispatch(activateServerErrorNotification()))
             }
         })
 }
@@ -70,7 +66,6 @@ const deleteCustomer = (event) => {
 
 const CustomerModalWindow = () => {
     const dispatch = useDispatch()
-    const isModalActive = useSelector(state => state.customers.modal.isActive)
     const customer = useSelector(state => state.customers.modal.selectedCustomer)
     const modalSubmitMethodType = useSelector(state => state.customers.modal.submitMethod)
     const loading = useSelector(state => state.customers.modalLoadingStatus)
@@ -83,7 +78,7 @@ const CustomerModalWindow = () => {
     return (
         <React.Fragment>
             <form onSubmit={(e) => onFormSubmit(e, dispatch, submitDetails)}>
-                <div className={`modal ${isModalActive ? "is-active" : ""}`}>
+                <div className={`modal ${"is-active"}`}>
                     <div className="modal-background"/>
                     <div className="modal-card">
                         <header className="modal-card-head">

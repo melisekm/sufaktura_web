@@ -3,7 +3,7 @@ import ContentPage from "../../component/ContentPage/ContentPage";
 import {useDispatch, useSelector} from "react-redux";
 import {getCustomers} from "../../redux/thunks/customerThunks";
 import TableItem from "../../component/TableItem/TableItem";
-import {closeNotification, toggleModal} from "../../redux/slices/customers";
+import {activateServerErrorNotification, closeNotification, toggleModal} from "../../redux/slices/customers";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
 import Notification from "../../component/Notification/Notification";
 
@@ -51,7 +51,7 @@ const CustomersPage = () => {
 
 
     useEffect(() => {
-        dispatch(getCustomers())
+        dispatch(getCustomers()).catch(() => dispatch(activateServerErrorNotification()))
     }, [dispatch]);
 
 

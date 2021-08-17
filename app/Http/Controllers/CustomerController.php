@@ -14,6 +14,19 @@ class CustomerController extends Controller
         return Customer::orderBy("id", "ASC")->get();
     }
 
+    public function createCustomer(Request $request)
+    {
+        $request->validate([
+            "name" => "required|min:2|max:20",
+            "address" => "required",
+            "city" => "required",
+            "postcode" => "required",
+        ]);
+        $customer = new Customer($request->all());
+        $customer->save();
+        return response($customer, 201);
+    }
+
     public function updateCustomer(Request $request)
     {
         $request->validate([
@@ -26,19 +39,6 @@ class CustomerController extends Controller
 
         $customer = Customer::find($request->input("id"));
         $customer->update($request->all());
-        return response($customer, 201);
-    }
-
-    public function createCustomer(Request $request)
-    {
-        $request->validate([
-            "name" => "required|min:2|max:20",
-            "address" => "required",
-            "city" => "required",
-            "postcode" => "required",
-        ]);
-        $customer = new Customer($request->all());
-        $customer->save();
         return response($customer, 201);
     }
 }

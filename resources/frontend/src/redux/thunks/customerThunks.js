@@ -14,7 +14,7 @@ export const getCustomers = () => async (dispatch) => {
         const response = await RequestService.get("/customers")
         dispatch(customersGetSuccess(response.data))
     } catch (error) {
-        dispatch(customersGetFailure(error.response))
+        dispatch(customersGetFailure(error.response.data))
         throw error.response
     }
 }
@@ -25,7 +25,7 @@ export const createCustomer = (customer) => async (dispatch) => {
         const response = await RequestService.post("/customer", customer)
         dispatch(createCustomerSuccess(response.data))
     } catch (error) {
-        dispatch(modalSubmitFailure(error.response))
+        dispatch(modalSubmitFailure(error.response.data))
         throw error.response
     }
 }
@@ -37,12 +37,13 @@ export const updateCustomer = (customer) => async (dispatch) => {
         const response = await RequestService.put("/customer", customer)
         dispatch(customerUpdatedSuccess(response.data))
     } catch (error) {
-        dispatch(modalSubmitFailure(error.response))
+        dispatch(modalSubmitFailure(error.response.data))
+        console.log(error.response)
         throw error.response
     }
 }
 
-
+//TODO
 export const deleteCustomer = (id) => async (dispatch) => {
     dispatch(modalWindowLoading())
     try {

@@ -40,7 +40,7 @@ export const customersSlice = createSlice({
             state.notification.isActive = true
         },
 
-        toggleNotification: (state, action) => {
+        openNotification: (state, action) => {
             state.notification.text = action.payload.text
             state.notification.design = action.payload.design
             state.notification.isActive = true
@@ -73,7 +73,7 @@ export const customersSlice = createSlice({
             state.customers = action.payload
         },
         customersGetFailure: (state, action) => {
-            state.tableLoadingStatus = null
+            state.tableLoadingStatus = "failure"
         },
 
         customerUpdatedSuccess: (state, action) => {
@@ -89,7 +89,7 @@ export const customersSlice = createSlice({
 
         modalSubmitFailure: (state, action) => {
             state.modalLoadingStatus = null
-            state.modalErrors = action.payload.data
+            state.modalErrors = action.payload
         }
     },
 })
@@ -97,7 +97,7 @@ export const customersSlice = createSlice({
 export const {
     internalServerError,
     toggleModal,
-    toggleNotification,
+    openNotification,
     closeNotification,
     tableLoading,
     activateServerErrorNotification,
