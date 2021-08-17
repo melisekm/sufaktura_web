@@ -23,6 +23,10 @@ export const customersSlice = createSlice({
             design: null,
         },
 
+        deleteModal:{
+            isActive:false,
+        },
+
         modal: {
             isActive: false,
             submitMethod: null,
@@ -30,10 +34,6 @@ export const customersSlice = createSlice({
         },
     },
     reducers: {
-        internalServerError: (state, action) => {
-            console.log("ISE")
-        },
-
         activateServerErrorNotification: (state) => {
             state.notification.text = "INTERNAL SERVER ERROR, TRY AGAIN LATER"
             state.notification.design = "is-danger"
@@ -68,6 +68,10 @@ export const customersSlice = createSlice({
             state.modalLoadingStatus = null
         },
 
+        toggleDeleteModal:(state,action)=>{
+            state.deleteModal.isActive = !state.deleteModal.isActive
+        },
+
         customersGetSuccess: (state, action) => {
             state.tableLoadingStatus = "success"
             state.customers = action.payload
@@ -87,6 +91,12 @@ export const customersSlice = createSlice({
             state.modalLoadingStatus = "success"
         },
 
+        customerDeleteSuccess: (state, action) => {
+            const index = state.customers.findIndex(x => x.id === action.payload)
+            state.customers.splice(index, 1)
+            state.modalLoadingStatus = "success"
+        },
+
         modalSubmitFailure: (state, action) => {
             state.modalLoadingStatus = null
             state.modalErrors = action.payload
@@ -95,8 +105,8 @@ export const customersSlice = createSlice({
 })
 
 export const {
-    internalServerError,
     toggleModal,
+    toggleDeleteModal,
     openNotification,
     closeNotification,
     tableLoading,
@@ -106,6 +116,7 @@ export const {
     customersGetFailure,
     customerUpdatedSuccess,
     createCustomerSuccess,
+    customerDeleteSuccess,
     modalSubmitFailure
 } = customersSlice.actions
 

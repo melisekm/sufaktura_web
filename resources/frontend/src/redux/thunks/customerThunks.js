@@ -4,7 +4,7 @@ import {
     customersGetSuccess,
     customersGetFailure,
     tableLoading,
-    modalWindowLoading, createCustomerSuccess
+    modalWindowLoading, createCustomerSuccess, customerDeleteSuccess
 } from "../slices/customers";
 import RequestService from "../../utils/request-service";
 
@@ -38,19 +38,18 @@ export const updateCustomer = (customer) => async (dispatch) => {
         dispatch(customerUpdatedSuccess(response.data))
     } catch (error) {
         dispatch(modalSubmitFailure(error.response.data))
-        console.log(error.response)
         throw error.response
     }
 }
 
-//TODO
 export const deleteCustomer = (id) => async (dispatch) => {
     dispatch(modalWindowLoading())
     try {
         const response = await RequestService.delete(`/customer/${id}`)
-        // dispatch(customerUpdatedSuccess(response.data))
+        dispatch(customerDeleteSuccess(id))
     } catch (error) {
-        // dispatch(customerUpdatedFailure(error.response.data))
+        dispatch(modalSubmitFailure(error.response.data))
+        throw error.response
     }
 }
 
