@@ -75,7 +75,6 @@ const CustomersPage = () => {
                          isLoading={isTableLoading}
                          toggleCreate={toggleModal}
                          emptyModalWindow={emptyCustomer}
-                         paginationMethod={getCustomers}
             />
             {isModalActive ? <CustomerModal/> : null}
         </div>
