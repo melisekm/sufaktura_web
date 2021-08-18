@@ -55,7 +55,7 @@ const CustomersPage = () => {
     useEffect(() => {
         const query = new URLSearchParams(location.search);
         const page = query.get("page") ?? 1 // Nullish coalescing operator (??)
-        const per_page = query.get("per_page") ?? 3
+        const per_page = query.get("per_page") ?? 10
         dispatch(getCustomers(page, per_page))
             .then(() => dispatch(setPaginationName("customers")))
             .catch(() => dispatch(activateServerErrorNotification()))
