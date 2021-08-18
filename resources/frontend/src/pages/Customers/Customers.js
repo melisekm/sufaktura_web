@@ -6,7 +6,8 @@ import TableItem from "../../component/TableItem/TableItem";
 import {activateServerErrorNotification, closeNotification, toggleModal} from "../../redux/slices/customers";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
 import Notification from "../../component/Notification/Notification";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
+import {setPaginationName} from "../../redux/slices/pagination";
 
 const getTableItems = (customers) => {
     return customers.map(
@@ -41,6 +42,10 @@ const getNotification = (isNotificationActive, notificationText, notificationDes
     }
 }
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 const CustomersPage = () => {
     const dispatch = useDispatch()
     const isTableLoading = useSelector(state => state.customers.tableLoadingStatus)
@@ -50,12 +55,15 @@ const CustomersPage = () => {
     const notificationText = useSelector(state => state.customers.notification.text)
     const notificationDesign = useSelector(state => state.customers.notification.design)
     const location = useLocation()
-    console.log(location)
-
 
     useEffect(() => {
-        dispatch(getCustomers()).catch(() => dispatch(activateServerErrorNotification()))
-    }, [dispatch]);
+        const query = new URLSearchParams(location.search);
+        const page = query.get("page") ?? 1 // Nullish coalescing operator (??)
+        const per_page = query.get("per_page") ?? 3
+        dispatch(getCustomers(page, per_page))
+            .then(() => dispatch(setPaginationName("customers")))
+            .catch(() => dispatch(activateServerErrorNotification()))
+    }, [dispatch, location]);
 
 
     return (
@@ -67,6 +75,7 @@ const CustomersPage = () => {
                          isLoading={isTableLoading}
                          toggleCreate={toggleModal}
                          emptyModalWindow={emptyCustomer}
+                         paginationMethod={getCustomers}
             />
             {isModalActive ? <CustomerModal/> : null}
         </div>

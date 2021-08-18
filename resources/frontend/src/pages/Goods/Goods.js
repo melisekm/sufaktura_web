@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import TableItem from "../../component/TableItem/TableItem";
 import ContentPage from "../../component/ContentPage/ContentPage";
 import {editGoods} from "../../redux/slices/goods";
+import {setPaginationName} from "../../redux/slices/pagination";
+import {useDispatch} from "react-redux";
 
 const goodsData = [
     ["1", "CPU FX-6300", "Procesor", "111.15 €"],
@@ -11,10 +13,16 @@ const goodsData = [
 
 
 const Goods = () => {
+    const dispatch = useDispatch()
+
     const goodsTableItems = goodsData.map(
         (goodsInfo) => <TableItem key={goodsInfo[0]} data={goodsInfo} tableCell={goodsInfo}
                                   modalToggle={editGoods}/>
     )
+    useEffect(() => {
+        dispatch(setPaginationName("goods"))
+    }, []);
+
     return (
         <div>
             <ContentPage title="Goods" description="Here you can find the comprehensive list of goods."

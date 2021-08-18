@@ -9,10 +9,16 @@ use Illuminate\Validation\ValidationException;
 
 class CustomerController extends Controller
 {
-    public function getAllCustomers()
+    public function getCustomers(Request $request)
     {
-        return Customer::orderBy("id", "ASC")->get();
+        $per_page = (int)$request->query("per_page", 10);
+        return Customer::orderBy("id", "ASC")->paginate($per_page);
     }
+
+//    public function getAllCustomers()
+//    {
+//        return Customer::orderBy("id", "ASC")->get();
+//    }
 
     public function createCustomer(Request $request)
     {

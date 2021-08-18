@@ -31,7 +31,7 @@ const ContentPage = (props) => {
                     </div>
                 </div>
                 {getLoadingOrTable(props.isLoading, props.tableColumns, props.tableData)}
-                <Pagination/>
+                <Pagination method={props.paginationMethod}/>
             </div>
         </div>
     );
