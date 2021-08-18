@@ -54,28 +54,68 @@ const Pagination = (props) => {
 
 
     return (
-        <nav className="pagination is-centered" role="navigation" aria-label="pagination">
-            {prev_btn}
-            {next_btn}
-            <ul className="pagination-list">
-                <li><Link to={{search: first}} className="pagination-link"
-                          aria-label="Goto page 1">1</Link></li>
+        <React.Fragment>
+            {/*<div className="columns is-fullhd">*/}
+            {/*    <div className="column " style={{textAlign:"right"}}>*/}
+            {/*        <div className="dropdown is-active" >*/}
+            {/*            <div className="dropdown-trigger">*/}
+            {/*                <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">*/}
+            {/*                    <span>Per Page</span>*/}
+            {/*                    <span className="icon is-small">*/}
+            {/*                <i className="fas fa-angle-down" aria-hidden="true"/>*/}
+            {/*            </span>*/}
+            {/*                </button>*/}
+            {/*            </div>*/}
+            {/*            <div className="dropdown-menu" id="dropdown-menu" role="menu">*/}
+            {/*                <div className="dropdown-content">*/}
+            {/*                    <a href="#" className="dropdown-item">*/}
+            {/*                        5*/}
+            {/*                    </a>*/}
+            {/*                    <a className="dropdown-item">*/}
 
-                <li><span className="pagination-ellipsis">&hellip;</span></li>
+            {/*                    </a>*/}
+            {/*                    <a href="#" className="dropdown-item is-active">*/}
+            {/*                        10*/}
+            {/*                    </a>*/}
+            {/*                    <a href="#" className="dropdown-item">*/}
+            {/*                        25*/}
+            {/*                    </a>*/}
+            {/*                    <hr className="dropdown-divider"/>*/}
+            {/*                    <a href="#" className="dropdown-item">*/}
+            {/*                        100*/}
+            {/*                    </a>*/}
+            {/*                </div>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
-                {prev_icon}
-                <li>
-                    <div className="pagination-link is-current" aria-label={`Page ${current_page}`}
-                         aria-current="page">{current_page}</div>
-                </li>
-                {next_icon}
 
-                <li><span className="pagination-ellipsis">&hellip;</span></li>
+            <nav className="pagination is-centered" role="navigation" aria-label="pagination">
+                {prev_btn}
+                {next_btn}
+                <ul className="pagination-list">
+                    <li><Link to={{search: first}} className="pagination-link"
+                              aria-label="Goto page 1">1</Link></li>
 
-                <li><Link to={{search: last}} className="pagination-link"
-                          aria-label={`Goto page ${pagination.last_page}`}>{pagination.last_page}</Link></li>
-            </ul>
-        </nav>
+                    <li><span className="pagination-ellipsis">&hellip;</span></li>
+
+                    {prev_icon}
+                    <li>
+                        <div className="pagination-link is-current" aria-label={`Page ${current_page}`}
+                             aria-current="page">{current_page}</div>
+                    </li>
+                    {next_icon}
+
+                    <li><span className="pagination-ellipsis">&hellip;</span></li>
+
+                    <li><Link to={{search: last}} className="pagination-link"
+                              aria-label={`Goto page ${pagination.last_page}`}>{pagination.last_page}</Link>
+                    </li>
+
+                </ul>
+            </nav>
+        </React.Fragment>
     )
 };
 

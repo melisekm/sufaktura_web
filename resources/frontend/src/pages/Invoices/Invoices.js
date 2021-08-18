@@ -19,7 +19,7 @@ const Invoices = () => {
     )
     useEffect(() => {
         dispatch(setPaginationName("invoices"))
-    }, [])
+    }, [dispatch])
 
     return (
         <div>

@@ -18,7 +18,7 @@ export const getCustomers = (page = "1", per_page = "10") => async (dispatch) =>
         "per_page":per_page
     }
     const queryParams = new URLSearchParams(params)
-    const url = `/customers/?${queryParams.toString()}`
+    const url = `/customers?${queryParams.toString()}`
     try {
         const response = await RequestService.get(url)
         let {data,...pagination} = response.data

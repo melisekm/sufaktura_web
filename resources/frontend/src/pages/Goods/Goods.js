@@ -21,7 +21,7 @@ const Goods = () => {
     )
     useEffect(() => {
         dispatch(setPaginationName("goods"))
-    }, []);
+    }, [dispatch]);
 
     return (
         <div>

@@ -6,7 +6,7 @@ import TableItem from "../../component/TableItem/TableItem";
 import {activateServerErrorNotification, closeNotification, toggleModal} from "../../redux/slices/customers";
 import CustomerModal from "../../component/CustomerModal/CustomerModal";
 import Notification from "../../component/Notification/Notification";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {setPaginationName} from "../../redux/slices/pagination";
 
 const getTableItems = (customers) => {
@@ -40,10 +40,6 @@ const getNotification = (isNotificationActive, notificationText, notificationDes
     } else {
         return null
     }
-}
-
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
 }
 
 const CustomersPage = () => {
