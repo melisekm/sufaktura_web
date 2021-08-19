@@ -34,7 +34,7 @@ function PerPageDropdown({first}) {
             <div className="column" style={{textAlign: "right"}}>
                 <div className={`dropdown ${isDropdownActive ? "is-active" : ""}`}>
                     <div className="dropdown-trigger">
-                        <button onClick={() => setDropDownActive(!isDropdownActive)} className="button"
+                        <button onClick={() => setDropDownActive(!isDropdownActive)} className="button dropdownBtn"
                                 aria-haspopup="true" aria-controls="dropdown-menu">
                             <span>Per Page</span>
                             <span className="icon is-small">

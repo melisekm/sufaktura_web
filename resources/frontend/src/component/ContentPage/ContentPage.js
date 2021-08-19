@@ -19,14 +19,15 @@ const ContentPage = (props) => {
         <div className="content">
             <h3 className="title is-3">{props.title}</h3>
             <div className="box">
-                <div className="container section">
-                    <div className="columns is-vcentered">
-                        <div className="column">
-                            <p className="subtitle is-5">{props.description}</p>
-                            <p className="subtitle is-6">Found {props.tableData.length} records</p>
-                        </div>
-                        <button onClick={(e) => dispatch(props.toggleCreate(props.emptyModalWindow))}
-                                className="button is-primary ml-auto">Create...
+
+                <div className="columns">
+                    <div className="column">
+                        <p className="subtitle is-5 ">{props.description}</p>
+                        <p className="subtitle is-6">Found {props.tableData.length} records</p>
+                    </div>
+                    <div className="column mt-auto" style={{textAlign: "right"}}>
+                        <button onClick={() => dispatch(props.toggleCreate(props.emptyModalWindow))} style={{width: "7rem"}}
+                                className="button is-primary createBtn">Create...
                         </button>
                     </div>
                 </div>

@@ -5,3 +5,11 @@
 .dropdown-menu {
     min-width: 50%;
 }
+
+.pagination-next, .pagination-previous, .dropdownBt{
+    width: 7rem;
+}
+
+.pagination-previous:focus, .pagination-next:focus, .pagination-link:focus {
+    border-color: #dbdbdb;
+}

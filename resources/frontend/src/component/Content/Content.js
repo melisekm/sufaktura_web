@@ -8,7 +8,7 @@ import Customers from "../../pages/Customers/Customers";
 
 const Content = () => {
     return (
-        <div className="container has-background-link-light p-6">
+        <div className="container has-background-white-ter p-6">
             <Switch>
                 <Route exact path="/customers" component={Customers}/>
                 <Route exact path="/goods" component={Goods}/>
