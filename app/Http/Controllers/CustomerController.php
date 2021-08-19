@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 
 class CustomerController extends Controller
 {
@@ -14,11 +12,6 @@ class CustomerController extends Controller
         $per_page = (int)$request->query("per_page", 10);
         return Customer::orderBy("id", "ASC")->paginate($per_page);
     }
-
-//    public function getAllCustomers()
-//    {
-//        return Customer::orderBy("id", "ASC")->get();
-//    }
 
     public function createCustomer(Request $request)
     {

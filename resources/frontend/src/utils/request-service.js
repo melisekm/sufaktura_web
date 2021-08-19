@@ -1,4 +1,4 @@
-import {API_BASE_URL} from "./constants/url";
+import {API_BASE_URL} from "./constants";
 import axios from "axios"
 
 class RequestService {

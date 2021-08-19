@@ -2,9 +2,8 @@ import React, {useEffect} from 'react';
 import "./Notification.css"
 import {useDispatch} from "react-redux";
 
-const Notification = (props) => {
+const Notification = ({hideNotification, design, children}) => {
     const dispatch = useDispatch()
-    const {hideNotification, design} = props
     useEffect(() => {
         setTimeout(dispatch, 2000, hideNotification())
     }, [dispatch, hideNotification]);
@@ -13,7 +12,7 @@ const Notification = (props) => {
             <div
                 className={`notification ${design} is-large`}>
                 <button onClick={() => dispatch(hideNotification())} className="delete"/>
-                {props.children}
+                {children}
             </div>
         </div>
     );

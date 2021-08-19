@@ -4,6 +4,7 @@ import Goods from "../../pages/Goods/Goods";
 import Invoices from "../../pages/Invoices/Invoices";
 import NotFound from "../../pages/NotFound/NotFound";
 import Customers from "../../pages/Customers/Customers";
+import GoodsCRUDPage from "../../pages/Goods/GoodsCRUDPage";
 
 
 const Content = () => {
@@ -13,6 +14,7 @@ const Content = () => {
                 <Route exact path="/customers" component={Customers}/>
                 <Route exact path="/goods" component={Goods}/>
                 <Route exact path="/invoices" component={Invoices}/>
+                <Route path="/goods/:id" component={GoodsCRUDPage}/>
                 <Route component={NotFound}/>
             </Switch>
         </div>

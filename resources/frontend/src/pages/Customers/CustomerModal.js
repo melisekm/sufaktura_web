@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    toggleModal,
-    openNotification,
-    activateServerErrorNotification,
-    toggleDeleteModal
-} from "../../redux/slices/customers";
-import {createCustomer, updateCustomer} from "../../redux/thunks/customerThunks";
-import DeleteCustomerModal from "./DeleteCustomerModal";
+import {toggleModal} from "../../redux/slices/customers";
+import {createCustomer, deleteCustomer, updateCustomer} from "../../redux/thunks/customerThunks";
+import DeleteItemModal from "../../component/Modal/DeleteItemModal";
+import {activateServerErrorNotification, openNotification, toggleDeleteModal} from "../../redux/slices/app";
 
 const updateCustomerSubmitDetails = {
     "requestMethod": updateCustomer,
@@ -47,14 +43,15 @@ const submitForm = (event, dispatch, submitDetails, customer) => {
             dispatch(openNotification(submitDetails.notification))
         })
         .catch(error => {
-            console.log("CM", error)
-            if (error.data && error.status !== 500) {
-                console.log("N500", error.data)
-            } else {
-                console.log("500", error.data)
+            if (error.status === 500) {
                 dispatch(activateServerErrorNotification())
             }
         })
+}
+
+const successDeleteNotification = {
+    "text": "Customer sucessfully deleted.",
+    "design": "is-primary"
 }
 
 
@@ -65,7 +62,7 @@ const CustomerModalWindow = () => {
     const modalSubmitMethodType = useSelector(state => state.customers.modal.submitMethod)
     const loading = useSelector(state => state.customers.modalLoadingStatus)
     const errors = useSelector(state => state.customers.modalErrors)
-    const isDeleteModalActive = useSelector(state => state.customers.deleteModal.isActive)
+    const isDeleteModalActive = useSelector(state => state.app.deleteModal.isActive)
     const submitDetails = createSubmitDetails(propsCustomer.id, modalSubmitMethodType)
 
     const handleKeyDown = ((event) => {
@@ -197,7 +194,16 @@ const CustomerModalWindow = () => {
                     </footer>
                 </div>
             </div>
-            {isDeleteModalActive ? <DeleteCustomerModal/> : null}
+            {isDeleteModalActive
+                ? <DeleteItemModal deleteMethod={deleteCustomer} toggleParentComponent={toggleModal}
+                                   successNotification={successDeleteNotification}>
+                    <p>
+                        Are you sure you want to delete this customer?
+                        All of this customer's data will be permanently removed. This action cannot be
+                        undone.
+                    </p>
+                </DeleteItemModal>
+                : null}
         </React.Fragment>
     );
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import {useDispatch} from "react-redux";
 
 const getDataCells = (data) => {
     let listProps = []
@@ -13,16 +12,15 @@ const getDataCells = (data) => {
 }
 
 const TableItem = (props) => {
-    const dispatch = useDispatch()
     const dataRef = props.data
     return (
         <tr>
             {getDataCells(props.tableCell)}
             <td>
-                <button onClick={(e) => dispatch(props.modalToggle({
+                <button onClick={() => props.onEditClick({
                     "selectedItem": dataRef,
                     "submitMethod": "EDIT"
-                }))}
+                })}
                         className="button is-small is-text">
                     <p><i className="fas fa-edit"/></p>
                 </button>

@@ -1,34 +1,66 @@
 import React, {useEffect} from "react";
 import TableItem from "../../component/TableItem/TableItem";
 import ContentPage from "../../component/ContentPage/ContentPage";
-import {editGoods} from "../../redux/slices/goods";
+import {toggleEditGoodsItem} from "../../redux/slices/goods";
 import {setPaginationName} from "../../redux/slices/pagination";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getGoods} from "../../redux/thunks/goodsThunks";
+import {useHistory, useLocation} from "react-router-dom";
+import {activateServerErrorNotification} from "../../redux/slices/app";
 
-const goodsData = [
-    ["1", "CPU FX-6300", "Procesor", "111.15 €"],
-    ["2", "RAM 4GB", "Random Access Memory", "25.15 €"],
-    ["3", "GPU 7790HD", "Graficka na hranie", "99.69 €"]
-]
+
+const emptyGoodsitem = {
+    "selectedItem": {
+        "category": "",
+        "name": "",
+        "description": "",
+        "price": ""
+    },
+    "submitMethod": "CREATE"
+}
+
+const goodsColumns = ["ID", "Category", "Name", "Description", "Price", "Details"]
+
 
 
 const Goods = () => {
     const dispatch = useDispatch()
+    const location = useLocation()
+    const history = useHistory()
+    const goods = useSelector(state => state.goods.goods)
 
-    const goodsTableItems = goodsData.map(
-        (goodsInfo) => <TableItem key={goodsInfo[0]} data={goodsInfo} tableCell={goodsInfo}
-                                  modalToggle={editGoods}/>
-    )
+
     useEffect(() => {
-        dispatch(setPaginationName("goods"))
-    }, [dispatch]);
+        dispatch(getGoods(location.search))
+            .then(() => dispatch(setPaginationName("goods")))
+            .catch(() => dispatch(activateServerErrorNotification()))
+    }, [dispatch, location]);
+
+    const openCrudPage = (payload) => {
+        history.push(`/goods/${payload.selectedItem.id}`)
+    }
+    const openCrudCreatePage = (payload)=>{
+        history.push(`/goods/${payload.selectedItem.id}`)
+    }
+
+
+    const getTableItems = () => {
+        return goods.map(
+            (goodsItem) => <TableItem key={goodsItem.id}
+                                      data={goodsItem}
+                                      tableCell={[goodsItem.id, goodsItem.category, goodsItem.name, goodsItem.description, `${goodsItem.price} €`]}
+                                      onEditClick={openCrudPage}
+            />
+        )
+    }
 
     return (
         <div>
             <ContentPage title="Goods" description="Here you can find the comprehensive list of goods."
-                         tableData={goodsTableItems}
-                         tableColumns={["ID", "Name", "Description", "Price", "Details"]}
-                         toggleCreate={editGoods}
+                         tableData={getTableItems(goods)}
+                         tableColumns={goodsColumns}
+                         toggleCreate={openCrudCreatePage}
+                         emptySelectedItem={emptyGoodsitem}
             />
         </div>
     )

@@ -1,29 +1,9 @@
 import React, {useEffect} from 'react';
-import {
-    activateServerErrorNotification,
-    openNotification,
-    toggleDeleteModal,
-    toggleModal
-} from "../../redux/slices/customers";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCustomer} from "../../redux/thunks/customerThunks";
+import {activateServerErrorNotification, openNotification, toggleDeleteModal} from "../../redux/slices/app";
 
-const successNotification = {
-    "text": "Customer sucessfully deleted.",
-    "design": "is-primary"
-}
 
-const onConfirm = (id, dispatch) => {
-    dispatch(deleteCustomer(id)).then(() => {
-        dispatch(toggleDeleteModal())
-        dispatch(toggleModal())
-        dispatch(openNotification(successNotification))
-    }).catch(() => {
-        dispatch(activateServerErrorNotification())
-    })
-}
-
-const DeleteCustomerModal = () => {
+const DeleteItemModal = ({deleteMethod, toggleParentComponent, successNotification, children}) => {
     const dispatch = useDispatch()
     const customerId = useSelector(state => state.customers.modal.selectedCustomer.id)
     const loading = useSelector(state => state.customers.modalLoadingStatus)
@@ -36,6 +16,16 @@ const DeleteCustomerModal = () => {
         return () => window.removeEventListener('keydown', handleKeyDown)
     })
 
+    const onConfirm = () => {
+        dispatch(deleteMethod(customerId)).then(() => {
+            dispatch(toggleDeleteModal())
+            dispatch(toggleParentComponent())
+            dispatch(openNotification(successNotification))
+        }).catch(() => {
+            dispatch(activateServerErrorNotification())
+        })
+    }
+
     let buttons
     if (loading === "loading") {
         buttons = {
@@ -47,10 +37,11 @@ const DeleteCustomerModal = () => {
         buttons = {
             "close": <button onClick={() => dispatch(toggleDeleteModal())} className="delete" aria-label="close"/>,
             "cancel": <button onClick={() => dispatch(toggleDeleteModal())} className="button ml-auto">Cancel</button>,
-            "confirm": <button onClick={() => onConfirm(customerId, dispatch)}
+            "confirm": <button onClick={onConfirm}
                                className="button is-danger">Confirm</button>
         }
     }
+
 
     return (
         <React.Fragment>
@@ -64,11 +55,7 @@ const DeleteCustomerModal = () => {
                         {buttons.close}
                     </header>
                     <section className="modal-card-body">
-                        <p>
-                            Are you sure you want to delete this customer?
-                            All of this customer's data will be permanently removed. This action cannot be
-                            undone.
-                        </p>
+                        {children}
                     </section>
                     <footer className="modal-card-foot">
                         {buttons.confirm}
@@ -80,4 +67,4 @@ const DeleteCustomerModal = () => {
     )
 };
 
-export default DeleteCustomerModal;
+export default DeleteItemModal;

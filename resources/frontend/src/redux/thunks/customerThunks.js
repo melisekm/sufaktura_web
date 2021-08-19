@@ -1,31 +1,26 @@
 import {
     createCustomerSuccess,
     customerDeleteSuccess,
-    customersGetFailure,
     customersGetSuccess,
     customerUpdatedSuccess,
     modalSubmitFailure,
     modalWindowLoading,
-    tableLoading
 } from "../slices/customers";
 import RequestService from "../../utils/request-service";
 import {setPaginationData} from "../slices/pagination";
+import {tableLoading, tableLoadingFailure, tableLoadingSucess} from "../slices/app";
 
-export const getCustomers = (page = "1", per_page = "10") => async (dispatch) => {
+export const getCustomers = (searchParams) => async (dispatch) => {
     dispatch(tableLoading())
-    const params = {
-        "page":page,
-        "per_page":per_page
-    }
-    const queryParams = new URLSearchParams(params)
-    const url = `/customers?${queryParams.toString()}`
+    const url = `/customers?${searchParams}`
     try {
         const response = await RequestService.get(url)
         let {data,...pagination} = response.data
         dispatch(customersGetSuccess(data))
+        dispatch(tableLoadingSucess())
         dispatch(setPaginationData(pagination))
     } catch (error) {
-        dispatch(customersGetFailure(error.response.data))
+        dispatch(tableLoadingFailure())
         throw error.response
     }
 }
