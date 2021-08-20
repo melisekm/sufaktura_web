@@ -40,11 +40,18 @@ const CustomersPage = () => {
 
     const getTableItems = () => {
         return customers.map(
-            (customer) => <TableItem key={customer.id}
-                                     data={customer}
-                                     tableCell={[customer.id, customer.name, `${customer.address}, ${customer.city} ${customer.postcode}`]}
-                                     onEditClick={toggleCustomersModal}
-            />
+            (customer) =>
+                <TableItem key={customer.id}
+                           data={customer}
+                           tableCell={
+                               [
+                                   customer.id,
+                                   customer.name,
+                                   `${customer.address}, ${customer.city} ${customer.postcode}`
+                               ]
+                           }
+                           onEditClick={toggleCustomersModal}
+                />
         )
     }
 

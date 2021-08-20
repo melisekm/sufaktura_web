@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import LoadingButton from "../../component/LoadingButton/LoadingButton";
+import Spinner from "../../component/Spinner/Spinner";
 import {createGoods, deleteGoods, getGoodsItem, updateGoods} from "../../redux/thunks/goodsThunks";
 import {activateServerErrorNotification, openNotification, toggleDeleteModal} from "../../redux/slices/app";
 import DeleteItemModal from "../../component/Modal/DeleteItemModal";
 import InvalidPage from "../../component/Pagination/InvalidPage";
+import {goodsCrudErrorsClear} from "../../redux/slices/goods";
 
 const initialItem = {
     "name": "",
@@ -36,7 +37,6 @@ const GoodsCRUDPage = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const goodsId = useParams().id
-    const propsItem = useSelector(state => state.goods.crudPage.selectedGoodItem)
     const errors = useSelector(state => state.goods.crudPage.errors)
     const loading = useSelector(state => state.goods.crudPage.loading)
     const isDeleteModalActive = useSelector(state => state.app.deleteModal.isActive)
@@ -45,16 +45,19 @@ const GoodsCRUDPage = () => {
     const submitDetails = goodsId !== "create" ? editSubmitDetails : createSubmitDetails
 
     useEffect(() => {
+        dispatch(goodsCrudErrorsClear())
         if (goodsId !== "create") {
-            dispatch(getGoodsItem(goodsId)).catch(() => setInvalidPage(true))
+            dispatch(getGoodsItem(goodsId))
+                .then((data) => {
+                    setGoodsItem(data)
+                })
+                .catch(() => setInvalidPage(true))
         }
     }, [dispatch, goodsId]);
 
-    useEffect(() => {
-        if (propsItem && goodsId !== "create") {
-            setGoodsItem(propsItem)
-        }
-    }, [propsItem, goodsId]);
+    if (invalidPage) {
+        return <InvalidPage/>
+    }
 
     const redirectToGoods = () => {
         history.push("/goods")
@@ -86,7 +89,7 @@ const GoodsCRUDPage = () => {
 
     let buttons
     if (loading === "loading") {
-        return <LoadingButton isCentered={true}/>
+        return <Spinner isCentered={true}/>
     } else {
         buttons = {
             "confirm": <button onClick={submitForm}
@@ -100,9 +103,6 @@ const GoodsCRUDPage = () => {
         }
     }
 
-    if (invalidPage) {
-        return <InvalidPage/>
-    }
     return (
         <React.Fragment>
             <div className="content">
@@ -115,7 +115,7 @@ const GoodsCRUDPage = () => {
                                    className={`input ${errors.category ? "is-danger" : ""}`}
                                    type="text" value={goodsItem.category} onChange={handleInputChange}/>
                             <span className="icon is-small is-left">
-                                          <i className="fas fa-user"/>
+                                          <i className="fas fa-list"/>
                                         </span>
                         </p>
                         {errors.category ?
@@ -129,7 +129,7 @@ const GoodsCRUDPage = () => {
                                    className={`input ${errors.name ? "is-danger" : ""}`}
                                    type="text" value={goodsItem.name} onChange={handleInputChange}/>
                             <span className="icon is-small is-left">
-                                        <i className="fas fa-home"/>
+                                        <i className="fas fa-file-signature"/>
                                     </span>
                         </p>
                         {errors.name ?
@@ -138,14 +138,11 @@ const GoodsCRUDPage = () => {
 
                     <div className="field">
                         <label className="label">Description</label>
-                        <p className="control has-icons-left">
-                            <input name="description"
-                                   className={`input ${errors.description ? "is-danger" : ""}`}
-                                   type="text" value={goodsItem.description} onChange={handleInputChange}/>
-                            <span className="icon is-small is-left">
-                                        <i className="fas fa-home"/>
-                                    </span>
-                        </p>
+                        <div className="control">
+                            <textarea name="description"
+                                      className={`textarea ${errors.description ? "is-danger" : ""} `}
+                                      value={goodsItem.description} onChange={handleInputChange}/>
+                        </div>
                         {errors.description ?
                             <p className="help is-danger">{errors.description}</p> : null}
                     </div>
@@ -157,7 +154,7 @@ const GoodsCRUDPage = () => {
                                    className={`input ${errors.price ? "is-danger" : ""}`}
                                    type="text" value={goodsItem.price} onChange={handleInputChange}/>
                             <span className="icon is-small is-left">
-                                        <i className="fas fa-home"/>
+                                        <i className="fas fa-tags"/>
                                     </span>
                         </p>
                         {errors.price ?
@@ -174,7 +171,7 @@ const GoodsCRUDPage = () => {
             </div>
             {isDeleteModalActive
                 ? <DeleteItemModal deleteMethod={deleteGoods} toggleParentComponent={redirectToGoods}
-                                   successNotification={{"text": "Item sucessfully deleted."}} itemId={propsItem.id}
+                                   successNotification={{"text": "Item sucessfully deleted."}} itemId={goodsId}
                                    name="Item">
                     <p>
                         Are you sure you want to delete this item?

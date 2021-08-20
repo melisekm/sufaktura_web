@@ -1,11 +1,13 @@
 import React from 'react';
 
+const truncate = (str, n) => (str.length > n) ? str.substr(0, n - 1) + '...' : str;
+
 const getDataCells = (data) => {
     let listProps = []
     for (const key in data) { // this.props.data je object
         const value = data[key]  // ktory ma "key" value preto nemozme iterovat cez map
         listProps.push(
-            <td key={value}>{value}</td>
+            <td key={value}>{truncate(value,35)}</td>
         )
     }
     return listProps

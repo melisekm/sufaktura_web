@@ -30,6 +30,7 @@ export const getGoodsItem = (id) => async (dispatch) => {
     try {
         const response = await RequestService.get(url)
         dispatch(goodsItemGetSuccess(response.data))
+        return response.data
     } catch (error) {
         dispatch(goodsItemGetFailure(error.response.data))
         throw error.response

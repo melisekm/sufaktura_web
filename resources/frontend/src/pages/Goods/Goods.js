@@ -21,7 +21,6 @@ const emptyGoodsitem = {
 const goodsColumns = ["ID", "Category", "Name", "Description", "Price", "Details"]
 
 
-
 const Goods = () => {
     const dispatch = useDispatch()
     const location = useLocation()
@@ -38,18 +37,27 @@ const Goods = () => {
     const openCrudPage = (payload) => {
         history.push(`/goods/${payload.selectedItem.id}`)
     }
-    const openCrudCreatePage = ()=>{
+    const openCrudCreatePage = () => {
         history.push(`/goods/create`)
     }
 
 
     const getTableItems = () => {
         return goods.map(
-            (goodsItem) => <TableItem key={goodsItem.id}
-                                      data={goodsItem}
-                                      tableCell={[goodsItem.id, goodsItem.category, goodsItem.name, goodsItem.description, `${goodsItem.price} €`]}
-                                      onEditClick={openCrudPage}
-            />
+            (goodsItem) =>
+                <TableItem key={goodsItem.id}
+                           data={goodsItem}
+                           tableCell={
+                               [
+                                   goodsItem.id,
+                                   goodsItem.category,
+                                   goodsItem.name,
+                                   goodsItem.description,
+                                   `${goodsItem.price} €`
+                               ]
+                           }
+                           onEditClick={openCrudPage}
+                />
         )
     }
 

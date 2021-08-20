@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingButton = (props) => {
+const Spinner = (props) => {
     const centered = props.isCentered ? "is-centered" : ""
     return (
         <div className={`buttons ${centered}`}>
@@ -9,4 +9,4 @@ const LoadingButton = (props) => {
     );
 };
 
-export default LoadingButton;
+export default Spinner;

@@ -14,8 +14,6 @@ export const goodsSlice = createSlice({
         goods: [],
         crudPage: {
             errors: initialEditPageErrors,
-            isActive: false,
-            selectedGoodItem: null,
             loading: null
         }
     },
@@ -29,9 +27,11 @@ export const goodsSlice = createSlice({
         },
 
         goodsItemGetSuccess: (state, action) => {
-            state.crudPage.selectedGoodItem = action.payload
-            state.crudPage.errors = initialEditPageErrors
             state.crudPage.loading = "success"
+        },
+
+        goodsCrudErrorsClear: (state) => {
+            state.crudPage.errors = initialEditPageErrors
         },
         goodsItemGetFailure: (state) => {
             state.crudPage.loading = "failure"
@@ -39,12 +39,9 @@ export const goodsSlice = createSlice({
         goodsGetSuccess: (state, action) => {
             state.goods = action.payload
         },
-
         createGoodsSuccess: (state, action) => {
-            state.goods.push(action.payload)
             state.crudPage.loading = "success"
         },
-
         goodsUpdatedSuccess: (state) => {
             state.crudPage.loading = "success"
         },
@@ -55,6 +52,7 @@ export const goodsSlice = createSlice({
 })
 
 export const {
+    goodsCrudErrorsClear,
     crudPageLoading,
     crudPageFailure,
     goodsItemGetSuccess,
