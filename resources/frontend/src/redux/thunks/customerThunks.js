@@ -12,7 +12,7 @@ import {tableLoading, tableLoadingFailure, tableLoadingSucess} from "../slices/a
 
 export const getCustomers = (searchParams) => async (dispatch) => {
     dispatch(tableLoading())
-    const url = `/customers?${searchParams}`
+    const url = `/customers${searchParams}`
     try {
         const response = await RequestService.get(url)
         let {data,...pagination} = response.data

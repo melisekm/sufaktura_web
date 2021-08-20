@@ -11,7 +11,7 @@ import {
 
 export const getGoods = (searchParams) => async (dispatch) => {
     dispatch(tableLoading())
-    const url = `/goods?${searchParams}`
+    const url = `/goods${searchParams}`
     try {
         const response = await RequestService.get(url)
         let {data, ...pagination} = response.data
