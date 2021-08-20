@@ -26,7 +26,7 @@ export const goodsSlice = createSlice({
             state.crudPage.errors = action.payload
         },
 
-        goodsItemGetSuccess: (state, action) => {
+        goodsItemGetSuccess: (state) => {
             state.crudPage.loading = "success"
         },
 
@@ -39,7 +39,7 @@ export const goodsSlice = createSlice({
         goodsGetSuccess: (state, action) => {
             state.goods = action.payload
         },
-        createGoodsSuccess: (state, action) => {
+        createGoodsSuccess: (state) => {
             state.crudPage.loading = "success"
         },
         goodsUpdatedSuccess: (state) => {

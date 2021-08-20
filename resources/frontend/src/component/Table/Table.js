@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Table.css"
 
-
+//TODO spravit toto cez redux aby menil stavy len na zaklade klikov a initial state
+// pretoze ak nieco spravim na goods tak sa to resetuje.
+// proste snazit sa aby si to pamatalo ze podla coho ma sortovat.
 const Table = (props) => {
     const [sortAsc, setSortAsc] = useState(true)
     const [rows, setRows] = useState(props.children)
@@ -59,6 +61,13 @@ const Table = (props) => {
             return <th key={prop}>{columnDesign(prop)}</th>
         }
     )
+    // kedze menime z vonku props children tak musime zmenit aj interne rows, nestaci init state.
+    // eqvivalent componentwillrecieveprops alebo componentwillupdate
+    useEffect(() => {
+        setRows([...props.children])
+    }, [props.children]);
+
+
     return (
         <div className="table-container">
             <table className="table is-bordered is-striped is-hoverable is-fullwidth has-text-centered">

@@ -9,22 +9,23 @@ import Notification from "../Notification/Notification";
 import {closeNotification} from "../../redux/slices/app";
 import {useSelector} from "react-redux";
 
-const getNotification = (isNotificationActive, notificationText, notificationDesign) => {
-    if (isNotificationActive) {
-        return (
-            <Notification design={notificationDesign} hideNotification={closeNotification}>
-                {notificationText}
-            </Notification>
-        )
-    } else {
-        return null
-    }
-}
-
 const Content = () => {
     const isNotificationActive = useSelector(state => state.app.notification.isActive)
     const notificationText = useSelector(state => state.app.notification.text)
     const notificationDesign = useSelector(state => state.app.notification.design)
+
+    const getNotification = () => {
+        if (isNotificationActive) {
+            return (
+                <Notification design={notificationDesign} hideNotification={closeNotification}>
+                    {notificationText}
+                </Notification>
+            )
+        } else {
+            return null
+        }
+    }
+
     return (
         <div className="container has-background-white-ter p-6">
             {getNotification(isNotificationActive, notificationText, notificationDesign)}
