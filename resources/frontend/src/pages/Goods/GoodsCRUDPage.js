@@ -1,99 +1,189 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import LoadingButton from "../../component/LoadingButton/LoadingButton";
-import {getGoods, getGoodsItem} from "../../redux/thunks/goodsThunks";
-import {setPaginationName} from "../../redux/slices/pagination";
-import {activateServerErrorNotification} from "../../redux/slices/app";
+import {createGoods, deleteGoods, getGoodsItem, updateGoods} from "../../redux/thunks/goodsThunks";
+import {activateServerErrorNotification, openNotification, toggleDeleteModal} from "../../redux/slices/app";
+import DeleteItemModal from "../../component/Modal/DeleteItemModal";
+import InvalidPage from "../../component/Pagination/InvalidPage";
 
-const initialEditPageErrors = {
-    "name": false,
-    "description": false,
-    "price": false,
-    "category": false
+const initialItem = {
+    "name": "",
+    "description": "",
+    "price": "",
+    "category": ""
+}
+
+const editSubmitDetails = {
+    "submitMethodType": "EDIT",
+    "requestMethod": updateGoods,
+    "notification": {
+        "text": "Item sucessfully edited.",
+        "design": "is-primary"
+    }
+}
+
+const createSubmitDetails = {
+    "submitMethodType": "CREATE",
+    "requestMethod": createGoods,
+    "notification": {
+        "text": "Item sucessfully created",
+        "design": "is-primary"
+    }
 }
 
 const GoodsCRUDPage = () => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const goodsId = useParams().id
-    const errors = useState(initialEditPageErrors)
-    const isLoading = useSelector(state => state.goods.crudPage.loading)
-    // const propsItem = useSelector(state => state.goods.crudPage.selectedGoodItem)
-    // let [goodsItem, setgoodsItem] = useState()
-    //
-    // useEffect(() => {
-    //     dispatch(getGoodsItem(goodsId)).then(()=>setgoodsItem(propsItem))
-    //         .catch(() => dispatch(activateServerErrorNotification()))
-    // }, [dispatch, goodsId]);
-    //
-    // const handleInputChange = () => {
-    //     console.log("lol")
-    // }
-    //
-    // if(goodsItem === null) return null
+    const propsItem = useSelector(state => state.goods.crudPage.selectedGoodItem)
+    const errors = useSelector(state => state.goods.crudPage.errors)
+    const loading = useSelector(state => state.goods.crudPage.loading)
+    const isDeleteModalActive = useSelector(state => state.app.deleteModal.isActive)
+    const [invalidPage, setInvalidPage] = useState(false)
+    let [goodsItem, setGoodsItem] = useState(initialItem)
+    const submitDetails = goodsId !== "create" ? editSubmitDetails : createSubmitDetails
 
-    if (isLoading === "loading") return <LoadingButton isCentered={true}/>
+    useEffect(() => {
+        if (goodsId !== "create") {
+            dispatch(getGoodsItem(goodsId)).catch(() => setInvalidPage(true))
+        }
+    }, [dispatch, goodsId]);
+
+    useEffect(() => {
+        if (propsItem && goodsId !== "create") {
+            setGoodsItem(propsItem)
+        }
+    }, [propsItem, goodsId]);
+
+    const redirectToGoods = () => {
+        history.push("/goods")
+    }
+
+    const submitForm = (event) => {
+        event.preventDefault()
+        dispatch(submitDetails.requestMethod(goodsItem))
+            .then(() => {
+                redirectToGoods()
+                dispatch(openNotification(submitDetails.notification))
+            })
+            .catch(error => {
+                if (error.status === 500) {
+                    dispatch(activateServerErrorNotification())
+                }
+            })
+    }
+
+    const handleInputChange = (event) => {
+        const {name, value} = event.target;
+        setGoodsItem({...goodsItem, [name]: value});
+    }
+
+    const openDeleteModal = (event) => {
+        event.preventDefault()
+        dispatch(toggleDeleteModal())
+    }
+
+    let buttons
+    if (loading === "loading") {
+        return <LoadingButton isCentered={true}/>
+    } else {
+        buttons = {
+            "confirm": <button onClick={submitForm}
+                               className="button is-success">Save changes</button>
+            ,
+            "cancel": <button onClick={redirectToGoods} className="button">Cancel</button>,
+            "delete": submitDetails.submitMethodType === "EDIT"
+                ? <button onClick={(e) => openDeleteModal(e)} className="button is-danger ml-auto">
+                    Delete Item</button>
+                : null
+        }
+    }
+
+    if (invalidPage) {
+        return <InvalidPage/>
+    }
     return (
-        <div className="content">
-            <h3 className="title is-3 is-family-code">Item Details</h3>
-            <div className="box">
-                <div className="field">
-                    <label className="label">Category</label>
-                    <p className="control has-icons-left">
-                        <input name="name"
-                               className={`input ${errors.category ? "is-danger" : ""}`}
-                               type="text" value={goodsItem.category} onChange={handleInputChange}/>
-                        <span className="icon is-small is-left">
+        <React.Fragment>
+            <div className="content">
+                <h3 className="title is-3 is-family-code">Item Details</h3>
+                <div className="box">
+                    <div className="field">
+                        <label className="label">Category</label>
+                        <p className="control has-icons-left">
+                            <input name="category"
+                                   className={`input ${errors.category ? "is-danger" : ""}`}
+                                   type="text" value={goodsItem.category} onChange={handleInputChange}/>
+                            <span className="icon is-small is-left">
                                           <i className="fas fa-user"/>
                                         </span>
-                    </p>
-                    {errors.category ?
-                        <p className="help is-danger">{errors.category}</p> : null}
-                </div>
+                        </p>
+                        {errors.category ?
+                            <p className="help is-danger">{errors.category}</p> : null}
+                    </div>
 
-                <div className="field">
-                    <label className="label">Name</label>
-                    <p className="control has-icons-left">
-                        <input name="address"
-                               className={`input ${errors.name ? "is-danger" : ""}`}
-                               type="text" value={goodsItem.name} onChange={handleInputChange}/>
-                        <span className="icon is-small is-left">
+                    <div className="field">
+                        <label className="label">Name</label>
+                        <p className="control has-icons-left">
+                            <input name="name"
+                                   className={`input ${errors.name ? "is-danger" : ""}`}
+                                   type="text" value={goodsItem.name} onChange={handleInputChange}/>
+                            <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
-                    </p>
-                    {errors.name ?
-                        <p className="help is-danger">{errors.name}</p> : null}
-                </div>
+                        </p>
+                        {errors.name ?
+                            <p className="help is-danger">{errors.name}</p> : null}
+                    </div>
 
-                <div className="field">
-                    <label className="label">Description</label>
-                    <p className="control has-icons-left">
-                        <input name="city"
-                               className={`input ${errors.description ? "is-danger" : ""}`}
-                               type="text" value={goodsItem.description} onChange={handleInputChange}/>
-                        <span className="icon is-small is-left">
+                    <div className="field">
+                        <label className="label">Description</label>
+                        <p className="control has-icons-left">
+                            <input name="description"
+                                   className={`input ${errors.description ? "is-danger" : ""}`}
+                                   type="text" value={goodsItem.description} onChange={handleInputChange}/>
+                            <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
-                    </p>
-                    {errors.description ?
-                        <p className="help is-danger">{errors.description}</p> : null}
-                </div>
+                        </p>
+                        {errors.description ?
+                            <p className="help is-danger">{errors.description}</p> : null}
+                    </div>
 
-                <div className="field">
-                    <label className="label">Price</label>
-                    <p className="control has-icons-left">
-                        <input name="postcode"
-                               className={`input ${errors.price ? "is-danger" : ""}`}
-                               type="text" value={goodsItem.price} onChange={handleInputChange}/>
-                        <span className="icon is-small is-left">
+                    <div className="field">
+                        <label className="label">Price</label>
+                        <p className="control has-icons-left">
+                            <input name="price"
+                                   className={`input ${errors.price ? "is-danger" : ""}`}
+                                   type="text" value={goodsItem.price} onChange={handleInputChange}/>
+                            <span className="icon is-small is-left">
                                         <i className="fas fa-home"/>
                                     </span>
-                    </p>
-                    {errors.price ?
-                        <p className="help is-danger">{errors.price}</p> : null}
+                        </p>
+                        {errors.price ?
+                            <p className="help is-danger">{errors.price}</p> : null}
+                    </div>
                 </div>
+                <footer className="modal-card-foot">
+                    {buttons.confirm}
+                    {buttons.cancel}
+                    {buttons.delete}
+                </footer>
+
+
             </div>
-        </div>
+            {isDeleteModalActive
+                ? <DeleteItemModal deleteMethod={deleteGoods} toggleParentComponent={redirectToGoods}
+                                   successNotification={{"text": "Item sucessfully deleted."}} itemId={propsItem.id}
+                                   name="Item">
+                    <p>
+                        Are you sure you want to delete this item?
+                        All data of this item will be permamently deleted. This action cannot be
+                        undone.
+                    </p>
+                </DeleteItemModal>
+                : null}
+        </React.Fragment>
     );
 };
 

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use App\Models\Goods;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GoodsController extends Controller
 {
@@ -30,7 +30,7 @@ class GoodsController extends Controller
             "category" => "required",
             "name" => "required",
             "description" => "required",
-            "price" => "required",
+            "price" => "required|regex:/^[0-9]+\.?[0-9]{0,2}$/",
         ]);
         $goods = new Goods($request->all());
         $goods->save();
@@ -44,10 +44,10 @@ class GoodsController extends Controller
             "category" => "required",
             "name" => "required",
             "description" => "required",
-            "price" => "required",
+            "price" => "required|regex:/^[0-9]+\.?[0-9]{0,2}$/",
         ]);
 
-        $goods = Customer::find($request->input("id"));
+        $goods = Goods::find($request->input("id"));
         $goods->update($request->all());
         return response($goods, 201);
     }

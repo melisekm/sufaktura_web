@@ -49,12 +49,6 @@ const submitForm = (event, dispatch, submitDetails, customer) => {
         })
 }
 
-const successDeleteNotification = {
-    "text": "Customer sucessfully deleted.",
-    "design": "is-primary"
-}
-
-
 const CustomerModalWindow = () => {
     const dispatch = useDispatch()
     const propsCustomer = useSelector(state => state.customers.modal.selectedCustomer)
@@ -83,17 +77,13 @@ const CustomerModalWindow = () => {
         dispatch(toggleDeleteModal())
     }
 
-
     const handleInputChange = (event) => {
-        let target = event.target
-        let value = target.value
-        let name = target.name
-        setCustomer(
-            {
-                ...customer,
-                [name]: value,
-            }
-        )
+        const {name, value} = event.target;
+        setCustomer({...customer, [name]: value});
+    }
+
+    const toggleItself = () => {
+        dispatch(toggleModal())
     }
 
     let buttons
@@ -117,7 +107,6 @@ const CustomerModalWindow = () => {
                     Customer</button> : null,
         }
     }
-
 
     return (
         <React.Fragment>
@@ -195,8 +184,9 @@ const CustomerModalWindow = () => {
                 </div>
             </div>
             {isDeleteModalActive
-                ? <DeleteItemModal deleteMethod={deleteCustomer} toggleParentComponent={toggleModal}
-                                   successNotification={successDeleteNotification}>
+                ? <DeleteItemModal deleteMethod={deleteCustomer} toggleParentComponent={toggleItself}
+                                   itemId={propsCustomer.id} name="Customer"
+                                   successNotification={{"text": "Customer sucessfully deleted."}}>
                     <p>
                         Are you sure you want to delete this customer?
                         All of this customer's data will be permanently removed. This action cannot be

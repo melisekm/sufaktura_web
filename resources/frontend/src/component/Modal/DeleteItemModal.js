@@ -1,12 +1,16 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {activateServerErrorNotification, openNotification, toggleDeleteModal} from "../../redux/slices/app";
+import {
+    activateServerErrorNotification, deleteFailure,
+    deleteLoading,
+    openNotification,
+    toggleDeleteModal
+} from "../../redux/slices/app";
 
-
-const DeleteItemModal = ({deleteMethod, toggleParentComponent, successNotification, children}) => {
+const DeleteItemModal = ({deleteMethod, toggleParentComponent, successNotification, itemId, name, children}) => {
     const dispatch = useDispatch()
-    const customerId = useSelector(state => state.customers.modal.selectedCustomer.id)
-    const loading = useSelector(state => state.customers.modalLoadingStatus)
+    const loading = useSelector(state => state.app.deleteModal.loading)
+    successNotification = {...successNotification, "design": "is-primary"}
 
     const handleKeyDown = ((event) => {
         if (event.key === "Escape") dispatch(toggleDeleteModal())
@@ -17,12 +21,14 @@ const DeleteItemModal = ({deleteMethod, toggleParentComponent, successNotificati
     })
 
     const onConfirm = () => {
-        dispatch(deleteMethod(customerId)).then(() => {
+        dispatch(deleteLoading())
+        dispatch(deleteMethod(itemId)).then(() => {
             dispatch(toggleDeleteModal())
-            dispatch(toggleParentComponent())
+            toggleParentComponent()
             dispatch(openNotification(successNotification))
         }).catch(() => {
             dispatch(activateServerErrorNotification())
+            dispatch(deleteFailure())
         })
     }
 
@@ -50,7 +56,7 @@ const DeleteItemModal = ({deleteMethod, toggleParentComponent, successNotificati
                 <div className="modal-card ">
                     <header className="modal-card-head">
                         <p className="modal-card-title">
-                            <i className="fas fa-exclamation-triangle has-text-danger"/> Delete customer
+                            <i className="fas fa-exclamation-triangle has-text-danger"/> Delete {name}
                         </p>
                         {buttons.close}
                     </header>

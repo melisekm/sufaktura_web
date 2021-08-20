@@ -10,6 +10,7 @@ export const appSlice = createSlice({
             design: null,
         },
         deleteModal: {
+            loading: false,
             isActive: false,
         },
     },
@@ -28,7 +29,7 @@ export const appSlice = createSlice({
             state.notification.isActive = false
         },
 
-        tableLoading: (state, action) => {
+        tableLoading: (state) => {
             state.tableLoadingStatus = "loading"
         },
         tableLoadingSucess: (state) => {
@@ -38,9 +39,16 @@ export const appSlice = createSlice({
             state.tableLoadingStatus = "failure"
         },
 
-        toggleDeleteModal: (state, action) => {
+        toggleDeleteModal: (state) => {
             state.deleteModal.isActive = !state.deleteModal.isActive
+            state.deleteModal.loading = "success"
         },
+        deleteLoading: (state) => {
+            state.deleteModal.loading = "loading"
+        },
+        deleteFailure: (state) => {
+            state.deleteModal.loading = "failure"
+        }
     },
     extraReducers: {},
 })
@@ -52,7 +60,9 @@ export const {
     activateServerErrorNotification,
     openNotification,
     closeNotification,
-    toggleDeleteModal
+    toggleDeleteModal,
+    deleteLoading,
+    deleteFailure,
 } = appSlice.actions
 
 export default appSlice.reducer

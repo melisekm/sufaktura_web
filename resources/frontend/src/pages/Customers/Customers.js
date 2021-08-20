@@ -54,7 +54,7 @@ const CustomersPage = () => {
             <ContentPage title="Customers" description="Here you can find the comprehensive list of customers."
                          tableData={getTableItems(customers)}
                          tableColumns={customerColumns}
-                         toggleCreate={toggleModal}
+                         toggleCreate={toggleCustomersModal}
                          emptySelectedItem={emptyCustomer}
             />
             {isModalActive ? <CustomerModal/> : null}

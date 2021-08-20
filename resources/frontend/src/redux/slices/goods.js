@@ -15,7 +15,6 @@ export const goodsSlice = createSlice({
         crudPage: {
             errors: initialEditPageErrors,
             isActive: false,
-            submitMethod: null,
             selectedGoodItem: null,
             loading: null
         }
@@ -26,15 +25,16 @@ export const goodsSlice = createSlice({
         },
         crudPageFailure: (state, action) => {
             state.crudPage.loading = null
-            state.state.crudPage.errors = action.payload
+            state.crudPage.errors = action.payload
         },
 
         goodsItemGetSuccess: (state, action) => {
             state.crudPage.selectedGoodItem = action.payload
+            state.crudPage.errors = initialEditPageErrors
             state.crudPage.loading = "success"
         },
-        goodsItemGetFailure:(state,action)=>{
-            console.log("failure to get goods") // TODO probably fill errors alebo zmazat.
+        goodsItemGetFailure: (state) => {
+            state.crudPage.loading = "failure"
         },
         goodsGetSuccess: (state, action) => {
             state.goods = action.payload
@@ -45,14 +45,10 @@ export const goodsSlice = createSlice({
             state.crudPage.loading = "success"
         },
 
-        goodsUpdatedSuccess: (state, action) => {
-            const index = state.goods.findIndex(x => x.id === action.payload.id)
-            state.goods[index] = action.payload
+        goodsUpdatedSuccess: (state) => {
             state.crudPage.loading = "success"
         },
-        goodsDeleteSuccess: (state, action) => {
-            const index = state.goods.findIndex(x => x.id === action.payload)
-            state.goods.splice(index, 1)
+        goodsDeleteSuccess: (state) => {
             state.crudPage.loading = "success"
         },
     },

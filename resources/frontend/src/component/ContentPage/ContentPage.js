@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from "../Table/Table";
 import LoadingButton from "../LoadingButton/LoadingButton";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import Pagination from "../Pagination/Pagination";
 import Notification from "../Notification/Notification";
 import {closeNotification} from "../../redux/slices/app";
@@ -28,12 +28,12 @@ const getNotification = (isNotificationActive, notificationText, notificationDes
 }
 
 const ContentPage = (props) => {
-    const dispatch = useDispatch()
     const isTableLoading = useSelector(state => state.app.tableLoadingStatus)
     const isNotificationActive = useSelector(state => state.app.notification.isActive)
     const notificationText = useSelector(state => state.app.notification.text)
     const notificationDesign = useSelector(state => state.app.notification.design)
     const pagination = useSelector(state => state.pagination.pagination)
+
     return (
         <React.Fragment>
             {getNotification(isNotificationActive, notificationText, notificationDesign)}
@@ -46,7 +46,7 @@ const ContentPage = (props) => {
                             <p className="subtitle is-6">Found {pagination ? pagination.total : ".."} records</p>
                         </div>
                         <div className="column mt-auto" style={{textAlign: "right"}}>
-                            <button onClick={() => dispatch(props.toggleCreate(props.emptySelectedItem))}
+                            <button onClick={() => props.toggleCreate(props.emptySelectedItem)}
                                     style={{width: "7rem"}}
                                     className="button is-primary createBtn">Create...
                             </button>

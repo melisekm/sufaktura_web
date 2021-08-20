@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import TableItem from "../../component/TableItem/TableItem";
 import ContentPage from "../../component/ContentPage/ContentPage";
-import {toggleEditGoodsItem} from "../../redux/slices/goods";
 import {setPaginationName} from "../../redux/slices/pagination";
 import {useDispatch, useSelector} from "react-redux";
 import {getGoods} from "../../redux/thunks/goodsThunks";
@@ -39,8 +38,8 @@ const Goods = () => {
     const openCrudPage = (payload) => {
         history.push(`/goods/${payload.selectedItem.id}`)
     }
-    const openCrudCreatePage = (payload)=>{
-        history.push(`/goods/${payload.selectedItem.id}`)
+    const openCrudCreatePage = ()=>{
+        history.push(`/goods/create`)
     }
 
 

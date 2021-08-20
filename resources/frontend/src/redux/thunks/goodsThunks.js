@@ -27,10 +27,10 @@ export const getGoods = (searchParams) => async (dispatch) => {
 export const getGoodsItem = (id) => async (dispatch) => {
     dispatch(crudPageLoading())
     const url = `/goods/${id}`
-    try{
+    try {
         const response = await RequestService.get(url)
         dispatch(goodsItemGetSuccess(response.data))
-    }catch(error){
+    } catch (error) {
         dispatch(goodsItemGetFailure(error.response.data))
         throw error.response
     }
@@ -48,10 +48,10 @@ export const createGoods = (goods) => async (dispatch) => {
 }
 
 
-export const updateGoods = (customer) => async (dispatch) => {
+export const updateGoods = (goods) => async (dispatch) => {
     dispatch(crudPageLoading())
     try {
-        const response = await RequestService.put("/goods", customer)
+        const response = await RequestService.put("/goods", goods)
         dispatch(goodsUpdatedSuccess(response.data))
     } catch (error) {
         dispatch(crudPageFailure(error.response.data))

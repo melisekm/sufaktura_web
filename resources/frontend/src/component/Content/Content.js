@@ -14,7 +14,8 @@ const Content = () => {
                 <Route exact path="/customers" component={Customers}/>
                 <Route exact path="/goods" component={Goods}/>
                 <Route exact path="/invoices" component={Invoices}/>
-                <Route path="/goods/:id" component={GoodsCRUDPage}/>
+                <Route exact path="/goods/:id" component={GoodsCRUDPage}/>
+                <Route exact path="/goods/create" component={GoodsCRUDPage}/>
                 <Route component={NotFound}/>
             </Switch>
         </div>

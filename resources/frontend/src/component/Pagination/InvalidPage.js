@@ -1,9 +1,12 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 const InvalidPage = () => {
-    const redirect = "/" + useSelector(state => state.pagination.name)
+    const pathname = useHistory().location.pathname
+    const baseNameIndex = pathname.lastIndexOf("/")
+    const paginationName = useSelector(state => state.pagination.name)
+    const redirect = paginationName ? "/" + paginationName : pathname.slice(0,baseNameIndex)
     return (
         <React.Fragment>
             <div className="level-item">
