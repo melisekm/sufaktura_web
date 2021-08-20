@@ -3,8 +3,6 @@ import Table from "../Table/Table";
 import Spinner from "../Spinner/Spinner";
 import {useSelector} from "react-redux";
 import Pagination from "../Pagination/Pagination";
-import Notification from "../Notification/Notification";
-import {closeNotification} from "../../redux/slices/app";
 
 
 const getLoadingOrTable = (isLoading, tableColumns, tableData) => {

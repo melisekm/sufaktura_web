@@ -4,10 +4,9 @@ const truncate = (str, n) => (str.length > n) ? str.substr(0, n - 1) + '...' : s
 
 const getDataCells = (data) => {
     let listProps = []
-    for (const key in data) { // this.props.data je object
-        const value = data[key]  // ktory ma "key" value preto nemozme iterovat cez map
+    for (const key in data) {
         listProps.push(
-            <td key={value}>{truncate(value,35)}</td>
+            <td key={key}>{truncate(data[key],35)}</td>
         )
     }
     return listProps

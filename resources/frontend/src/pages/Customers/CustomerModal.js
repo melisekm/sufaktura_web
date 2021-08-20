@@ -189,7 +189,7 @@ const CustomerModalWindow = () => {
                                    successNotification={{"text": "Customer sucessfully deleted."}}>
                     <p>
                         Are you sure you want to delete this customer?
-                        All of this customer's data will be permanently removed. This action cannot be
+                        All of this customer&apos;s data will be permanently removed. This action cannot be
                         undone.
                     </p>
                 </DeleteItemModal>
