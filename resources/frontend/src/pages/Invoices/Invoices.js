@@ -1,32 +1,50 @@
 import React, {useEffect} from "react";
 import TableItem from "../../component/TableItem/TableItem";
 import ContentPage from "../../component/ContentPage/ContentPage";
-import {editInvoices} from "../../redux/slices/invoices";
 import {setPaginationName} from "../../redux/slices/pagination";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useLocation} from "react-router-dom";
+import {getInvoices} from "../../redux/thunks/invoicesThunks";
+import {activateServerErrorNotification} from "../../redux/slices/app";
 
-const invoicesData = [
-    ["1", "10.08.2021", "Martin Novy", "6074.78 €"],
-    ["2", "11.08.2021", "Peter Stary", "5694.96 €"],
-    ["3", "12.08.2021", "Ivan Vladimirovic", "9761.15 €"]
-]
+
+const invoicesColumns = ["ID", "Date", "Customer", "Total", "Details"]
 
 const Invoices = () => {
     const dispatch = useDispatch()
-    const invoicesTableItems = invoicesData.map(
-        (invoicesInfo) => <TableItem key={invoicesInfo[0]} data={invoicesInfo} tableCell={invoicesInfo}
-                                     modalToggle={editInvoices}/>
-    )
+    const history = useHistory()
+    const location = useLocation()
+    const invoices = useSelector(state => state.invoices.invoices)
+
     useEffect(() => {
-        dispatch(setPaginationName("invoices"))
-    }, [dispatch])
+        dispatch(getInvoices(location.search))
+            .then(() => dispatch(setPaginationName("invoices")))
+            .catch(() => dispatch(activateServerErrorNotification()))
+    }, [dispatch, location])
+
+    const openCreatePage = () => {
+        history.push("invoices/create")
+    }
+
+    const openInfoPage = (payload) => {
+        history.push(`invoices/${payload.selectedItem.id}`)
+    }
+
+    const getTableItems = () => {
+        return invoices.map(
+            (invoice) => <TableItem key={invoice.id} data={invoice}
+                                    tableCell={[invoice.id, invoice.date_of_issue, invoice.customer_name, `${invoice.total_price} €`]}
+                                    onEditClick={openInfoPage}/>
+        )
+    }
 
     return (
         <div>
             <ContentPage title="Invoices" description="Here you can find the comprehensive list of invoices."
-                         tableData={invoicesTableItems}
-                         tableColumns={["ID", "Date", "Customer", "Total", "Details"]}
-                         toggleCreate={editInvoices}/>
+                         tableData={getTableItems(invoices)}
+                         tableColumns={invoicesColumns}
+                         toggleCreate={openCreatePage}
+            />
         </div>
     )
 };

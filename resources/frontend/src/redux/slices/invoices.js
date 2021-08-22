@@ -2,16 +2,19 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const invoicesSlice = createSlice({
     name: "invoices",
-    initialState: {},
-    reducers: {
-        editInvoices: (state, action) => {
+    initialState: {
+        invoices : [],
 
+    },
+    reducers: {
+        invoicesGetSuccess: (state, action) => {
+            state.invoices = action.payload
         }
     },
     extraReducers: {}
 })
 
-export const {editInvoices} = invoicesSlice.actions
+export const {invoicesGetSuccess} = invoicesSlice.actions
 
 export default invoicesSlice.reducer
 

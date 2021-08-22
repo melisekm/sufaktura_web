@@ -15,7 +15,7 @@ class GoodsController extends Controller
         if ($goodsItem == null) {
             return response(null, 404);
         }
-        return Goods::find($id);
+        return $goodsItem;
     }
 
     public function getGoods(Request $request)
@@ -57,8 +57,7 @@ class GoodsController extends Controller
         $deleted = Goods::destroy($id);
         if ($deleted) {
             return response(null, 200);
-        } else {
-            return response(["id" => $id, "error" => "This goodsItem doesn't exist."], 404);
         }
+        return response(["id" => $id, "error" => "This goodsItem doesn't exist."], 404);
     }
 }

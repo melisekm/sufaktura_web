@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GoodsController;
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
@@ -26,3 +27,8 @@ Route::get('v1/goods/{id}', [GoodsController::class, 'getGoodsItem']);
 Route::put("v1/goods", [GoodsController::class, "updateGoods"]);
 Route::post("v1/goods", [GoodsController::class, "createGoods"]);
 Route::delete("v1/goods/{id}", [GoodsController::class, "deleteGoods"]);
+
+Route::get('v1/invoices', [InvoiceController::class, 'getInvoices']);
+Route::get('v1/invoices/{id}', [InvoiceController::class, 'getInvoice']);
+Route::post("v1/invoices", [InvoiceController::class, "createInvoice"]);
+Route::delete("v1/invoices/{id}", [InvoiceController::class, "deleteInvoice"]);

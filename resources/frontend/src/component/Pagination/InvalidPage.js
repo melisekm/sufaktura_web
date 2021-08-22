@@ -14,7 +14,7 @@ const InvalidPage = () => {
             </div>
             <div className="level-item">
                 <Link to={redirect} className="pagination-link is-current"
-                      aria-label="Go to back">Go back
+                      aria-label="Go back">Go back
                 </Link>
             </div>
         </React.Fragment>
