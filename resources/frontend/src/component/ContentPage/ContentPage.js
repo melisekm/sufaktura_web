@@ -5,15 +5,23 @@ import {useSelector} from "react-redux";
 import Pagination from "../Pagination/Pagination";
 
 
-const getLoadingOrTable = (isLoading, tableColumns, tableData) => {
+const getLoadingOrTable = (isLoading, tableColumns, tableData, columnInternalNames) => {
     if (isLoading === "loading") {
         return <Spinner isCentered={true}/>
     } else {
-        return <Table columns={tableColumns}>{tableData}</Table>
+        return <Table columnInternalNames={columnInternalNames} edit columns={tableColumns}>{tableData}</Table>
     }
 }
 
-const ContentPage = ({title, description, toggleCreate, emptySelectedItem, tableColumns, tableData}) => {
+const ContentPage = ({
+                         title,
+                         description,
+                         toggleCreate,
+                         emptySelectedItem,
+                         tableColumns,
+                         tableData,
+                         columnInternalNames
+                     }) => {
     const isTableLoading = useSelector(state => state.app.tableLoadingStatus)
     const pagination = useSelector(state => state.pagination.pagination)
 
@@ -34,7 +42,7 @@ const ContentPage = ({title, description, toggleCreate, emptySelectedItem, table
                             </button>
                         </div>
                     </div>
-                    {getLoadingOrTable(isTableLoading, tableColumns, tableData)}
+                    {getLoadingOrTable(isTableLoading, tableColumns, tableData, columnInternalNames)}
                     <Pagination/>
                 </div>
             </div>

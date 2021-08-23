@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceController extends Controller
 {
     public function getInvoice($id)
     {
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::with("items")->find($id);
         if ($invoice == null) {
             return response(null, 404);
         }

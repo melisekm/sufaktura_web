@@ -6,26 +6,30 @@ const getDataCells = (data) => {
     let listProps = []
     for (const key in data) {
         listProps.push(
-            <td key={key}>{truncate(data[key],35)}</td>
+            <td key={key}>{truncate(data[key], 35)}</td>
         )
     }
     return listProps
 }
 
-const TableItem = (props) => {
-    const dataRef = props.data
+const TableItem = ({data, tableCell, onEditClick, edit}) => {
+    const dataRef = data
     return (
         <tr>
-            {getDataCells(props.tableCell)}
-            <td>
-                <button onClick={() => props.onEditClick({
-                    "selectedItem": dataRef,
-                    "submitMethod": "EDIT"
-                })}
-                        className="button is-small is-text">
-                    <p><i className="fas fa-edit"/></p>
-                </button>
-            </td>
+            {getDataCells(tableCell)}
+            {edit ?
+                <td>
+
+                    <button onClick={() => onEditClick({
+                        "selectedItem": dataRef,
+                        "submitMethod": "EDIT"
+                    })}
+                            className="button is-small is-text">
+                        <p><i className="fas fa-edit"/></p>
+                    </button>
+                </td>
+                : null
+            }
         </tr>
     );
 };

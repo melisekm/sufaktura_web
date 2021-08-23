@@ -41,7 +41,7 @@ const CustomersPage = () => {
     const getTableItems = () => {
         return customers.map(
             (customer) =>
-                <TableItem key={customer.id}
+                <TableItem key={customer.id} edit
                            data={customer}
                            tableCell={
                                [
@@ -63,6 +63,7 @@ const CustomersPage = () => {
                          tableColumns={customerColumns}
                          toggleCreate={toggleCustomersModal}
                          emptySelectedItem={emptyCustomer}
+                         columnInternalNames={["id","name","address"]}
             />
             {isModalActive ? <CustomerModal/> : null}
         </div>

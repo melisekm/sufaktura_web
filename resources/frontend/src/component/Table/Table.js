@@ -4,20 +4,25 @@ import "./Table.css"
 //TODO spravit toto cez redux aby menil stavy len na zaklade klikov a initial state
 // pretoze ak nieco spravim na goods tak sa to resetuje.
 // proste snazit sa aby si to pamatalo ze podla coho ma sortovat.
-const Table = (props) => {
+const Table = ({columns, columnInternalNames, edit, children}) => {
     const [sortAsc, setSortAsc] = useState(true)
-    const [rows, setRows] = useState(props.children)
-    const sortByCol = (event) => {
+    const [rows, setRows] = useState(children)
+    const sortByCol = (col, index) => {
+        col = col.toLowerCase()
+        if (col === "details") return
         setSortAsc(!sortAsc)
-        const col = event.toLowerCase()
 
         function compare(a, b) {
-            if (col === "price") {
-                a = parseFloat(a.props.data.price)
-                b = parseFloat(b.props.data.price)
+            if (col.includes("price")) {
+                a = parseFloat(a.props.data[columnInternalNames[index]])
+                b = parseFloat(b.props.data[columnInternalNames[index]])
             } else {
-                a = a.props.data[col]
-                b = b.props.data[col]
+                a = a.props.data[columnInternalNames[index]]
+                b = b.props.data[columnInternalNames[index]]
+                if (typeof a == "string") {
+                    a = a.toLowerCase()
+                    b = b.toLowerCase()
+                }
             }
             if (a < b) {
                 return -1;
@@ -42,30 +47,28 @@ const Table = (props) => {
         return <i className="fas fa-sort-down" style={{position: "relative", top: "-1px"}}/>
     }
 
-    const columnDesign = (prop) => {
-        if (prop === "Details") {
-            return <strong>{prop}</strong>
+    const columnDesign = (col) => {
+        if (edit && col === "Details") {
+            return <strong>{col}</strong>
         } else {
             return (
-                <button className="btn" onClick={() => sortByCol(prop)} type="button">
-                    <strong>
-                        {prop} {sortIconDesign()}
-                    </strong>
-                </button>
+                <strong>
+                    {col} {sortIconDesign()}
+                </strong>
             )
         }
     }
 
-    const listProps = props.columns.map(
-        (prop) => {
-            return <th key={prop}>{columnDesign(prop)}</th>
+    const listProps = columns.map(
+        (col, index) => {
+            return <th onClick={() => sortByCol(col, index)} key={col}>{columnDesign(col)}</th>
         }
     )
     // kedze menime z vonku props children tak musime zmenit aj interne rows, nestaci init state.
     // eqvivalent componentwillrecieveprops alebo componentwillupdate
     useEffect(() => {
-        setRows([...props.children])
-    }, [props.children]);
+        setRows([...children])
+    }, [children]);
 
 
     return (

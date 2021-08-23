@@ -45,7 +45,7 @@ const Goods = () => {
     const getTableItems = () => {
         return goods.map(
             (goodsItem) =>
-                <TableItem key={goodsItem.id}
+                <TableItem key={goodsItem.id} edit
                            data={goodsItem}
                            tableCell={
                                [
@@ -68,6 +68,7 @@ const Goods = () => {
                          tableColumns={goodsColumns}
                          toggleCreate={openCrudCreatePage}
                          emptySelectedItem={emptyGoodsitem}
+                         columnInternalNames={["id","category","name","description","price"]}
             />
         </div>
     )

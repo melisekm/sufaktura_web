@@ -32,7 +32,7 @@ const Invoices = () => {
 
     const getTableItems = () => {
         return invoices.map(
-            (invoice) => <TableItem key={invoice.id} data={invoice}
+            (invoice) => <TableItem key={invoice.id} data={invoice} edit
                                     tableCell={[invoice.id, invoice.date_of_issue, invoice.customer_name, `${invoice.total_price} €`]}
                                     onEditClick={openInfoPage}/>
         )
@@ -44,6 +44,7 @@ const Invoices = () => {
                          tableData={getTableItems(invoices)}
                          tableColumns={invoicesColumns}
                          toggleCreate={openCreatePage}
+                         columnInternalNames={["id","date_of_issue","customer_name","total_price"]}
             />
         </div>
     )

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Barryvdh\LaravelIdeHelper\Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereTotalPrice($value)
  * @mixin Eloquent
+ * @property-read Collection|InvoiceGoodsItem[] $items
+ * @property-read int|null $items_count
  */
 class Invoice extends Model
 {
@@ -30,4 +33,9 @@ class Invoice extends Model
     protected $fillable = [
         "id", "date_of_issue", "customer_name", "customer_address", "total_price"
     ];
+
+    public function items() // Invoice::with("items")->find($id)
+    {
+        return $this->hasMany(InvoiceGoodsItem::class, 'invoices_id');
+    }
 }

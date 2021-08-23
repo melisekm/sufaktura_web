@@ -20,14 +20,14 @@ export const getInvoices = (searchParams) => async (dispatch) => {
 }
 
 export const getInvoiceItem = (id) => async (dispatch) => {
-    // dispatch(crudPageLoading())
+    dispatch(tableLoading())
     const url = `/invoices/${id}`
     try {
         const response = await RequestService.get(url)
-        dispatch(invoicesItemGetSuccess(response.data))
+        dispatch(tableLoadingSucess())
         return response.data
     } catch (error) {
-        dispatch(invoicesItemGetFailure(error.response.data))
+        dispatch(tableLoadingFailure())
         throw error.response
     }
 }
