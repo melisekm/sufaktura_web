@@ -38,11 +38,11 @@ class InvoiceController extends Controller
 
     public function deleteInvoice($id)
     {
-        $deleted = Invoice::destroy($id);
-        if ($deleted) {
+        $invoice = Invoice::find($id);
+        $invoice->items()->delete();
+        if ($invoice->delete()) {
             return response(null, 200);
         }
         return response(["id" => $id, "error" => "This invoice doesn't exist."], 404);
     }
-    //TODO vytvorit funkciu na vratenie itemov na zaklade faktury
 }

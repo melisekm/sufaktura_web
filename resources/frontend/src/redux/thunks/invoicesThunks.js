@@ -32,25 +32,25 @@ export const getInvoiceItem = (id) => async (dispatch) => {
     }
 }
 
-export const createInvoice = (goods) => async (dispatch) => {
-    // dispatch(crudPageLoading())
-    try {
-        const response = await RequestService.post("/invoices", invoices)
-        dispatch(createInvoiceSuccess(response.data))
-    } catch (error) {
-        dispatch(createInvoiceFailure(error.response.data))
-        throw error.response
-    }
-}
+// export const createInvoice = (goods) => async (dispatch) => {
+//     // dispatch(crudPageLoading())
+//     try {
+//         const response = await RequestService.post("/invoices", invoices)
+//         dispatch(createInvoiceSuccess(response.data))
+//     } catch (error) {
+//         dispatch(createInvoiceFailure(error.response.data))
+//         throw error.response
+//     }
+// }
 
 
 export const deleteInvoice = (id) => async (dispatch) => {
     // dispatch(crudPageLoading())
     try {
         await RequestService.delete(`/invoices/${id}`)
-        dispatch(invoiceDeleteSuccess(id))
+        // dispatch(invoiceDeleteSuccess(id))
     } catch (error) {
-        dispatch(invoiceDeleteFailure(error.response.data))
+        // dispatch(invoiceDeleteFailure(error.response.data))
         throw error.response
     }
 }
