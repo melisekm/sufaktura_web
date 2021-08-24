@@ -65,7 +65,7 @@ const InvoicesViewPage = () => {
     return (
         <React.Fragment>
             <div className="box">
-                <h1 className="title is=2">Faktura ID {invoice.id}</h1>
+                <h1 className="title is=2">Invoice ID {invoice.id}</h1>
                 <div className="columns">
                     <div className="column is-7">
                         <h2 className="subtitle is-3">Customer</h2>
@@ -100,11 +100,11 @@ const InvoicesViewPage = () => {
             </footer>
             {isDeleteModalActive
                 ? <DeleteItemModal deleteMethod={deleteInvoice} toggleParentComponent={redirectToInvoices}
-                                   successNotification={{"text": "Invoice sucessfully deleted."}} itemId={invoice.id}
+                                   successNotification={{"text": "Invoice successfully deleted."}} itemId={invoice.id}
                                    name="Invoice">
                     <p>
                         Are you sure you want to delete this invoice?
-                        All data of this invoice, will be permamently deleted. This action cannot be
+                        All data of this invoice, will be permanently deleted. This action cannot be
                         undone.
                     </p>
                 </DeleteItemModal>

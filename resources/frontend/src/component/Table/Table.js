@@ -13,7 +13,7 @@ const Table = ({columns, columnInternalNames, edit, children}) => {
         setSortAsc(!sortAsc)
 
         function compare(a, b) {
-            if (col.includes("price")) {
+            if (col.includes("price") || col.includes("total")) {
                 a = parseFloat(a.props.data[columnInternalNames[index]])
                 b = parseFloat(b.props.data[columnInternalNames[index]])
             } else {

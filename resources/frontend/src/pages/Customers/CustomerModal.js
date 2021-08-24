@@ -186,7 +186,7 @@ const CustomerModalWindow = () => {
             {isDeleteModalActive
                 ? <DeleteItemModal deleteMethod={deleteCustomer} toggleParentComponent={toggleItself}
                                    itemId={propsCustomer.id} name="Customer"
-                                   successNotification={{"text": "Customer sucessfully deleted."}}>
+                                   successNotification={{"text": "Customer successfully deleted."}}>
                     <p>
                         Are you sure you want to delete this customer?
                         All of this customer&apos;s data will be permanently removed. This action cannot be

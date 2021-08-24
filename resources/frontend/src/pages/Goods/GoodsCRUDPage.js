@@ -19,7 +19,7 @@ const editSubmitDetails = {
     "submitMethodType": "EDIT",
     "requestMethod": updateGoods,
     "notification": {
-        "text": "Item sucessfully edited.",
+        "text": "Item successfully edited.",
         "design": "is-primary"
     }
 }
@@ -28,7 +28,7 @@ const createSubmitDetails = {
     "submitMethodType": "CREATE",
     "requestMethod": createGoods,
     "notification": {
-        "text": "Item sucessfully created",
+        "text": "Item successfully created",
         "design": "is-primary"
     }
 }
@@ -171,11 +171,11 @@ const GoodsCRUDPage = () => {
             </div>
             {isDeleteModalActive
                 ? <DeleteItemModal deleteMethod={deleteGoods} toggleParentComponent={redirectToGoods}
-                                   successNotification={{"text": "Item sucessfully deleted."}} itemId={goodsId}
+                                   successNotification={{"text": "Item successfully deleted."}} itemId={goodsId}
                                    name="Item">
                     <p>
                         Are you sure you want to delete this item?
-                        All data of this item will be permamently deleted. This action cannot be
+                        All data of this item will be permanently deleted. This action cannot be
                         undone.
                     </p>
                 </DeleteItemModal>
