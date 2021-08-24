@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
@@ -12,6 +13,19 @@ class CustomerController extends Controller
         $per_page = (int)$request->query("per_page", 10);
         return Customer::orderBy("id", "ASC")->paginate($per_page);
     }
+
+    public function getCustomersByQuery(Request $request)
+    {
+        $limit = (int)$request->query("limit", 10);
+        $name = $request->query("query", "");
+        $query = Customer::where("name", "ilike", "%" . $name . "%");
+        if (is_numeric($name)) {
+            $query = $query->orWhere("id",$name);
+        }
+        $query = $query->orderBy("id", "ASC");
+        return $query->take($limit)->get();
+    }
+
 
     public function createCustomer(Request $request)
     {

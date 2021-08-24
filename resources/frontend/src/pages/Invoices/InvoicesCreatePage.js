@@ -4,12 +4,14 @@ import DatePicker from "react-datepicker";
 import SelectSearch from 'react-select-search';
 import RequestService from "../../utils/request-service";
 
-
-
 import "react-datepicker/dist/react-datepicker.css";
+import "./SelectSearch.css"
+
+const perPageCustomerResults = 3
 
 const InvoicesCreatePage = () => {
     const [startDate, setStartDate] = useState(new Date())
+    const [selectedCustomer, setSelectedCustomer] = useState("")
 
     const redirectToInvoices = () => {
         history.push("/invoices")
@@ -20,6 +22,15 @@ const InvoicesCreatePage = () => {
         alert("saving shit")
         // history.push("/invoices")
     }
+
+    const formatCustomerDetails = () => {
+        if (selectedCustomer === "") return ""
+        return `Name: ${selectedCustomer.name}\nAddress: ${selectedCustomer.address}\nCity: ${selectedCustomer.city}\nPostcode: ${selectedCustomer.postcode}`
+    }
+
+    const getCustomer = (value, option) => {
+        setSelectedCustomer(option.obj)
+    }
     return (
         <React.Fragment>
             <div className="box">
@@ -29,35 +40,32 @@ const InvoicesCreatePage = () => {
                         <h2 className="subtitle is-3">Customer</h2>
                         <div className="field">
                             <SelectSearch
+                                onChange={getCustomer}
+                                search
+                                placeholder="Search by name or id"
+                                emptyMessage="No customers found"
                                 options={[]}
                                 getOptions={(query) => {
-
                                     return new Promise((resolve, reject) => {
-                                        RequestService.get(`/customers`)
+                                        RequestService.get(`/query/customers?query=${query}&limit=${perPageCustomerResults}`)
                                             .then((res) => {
-                                            console.log(res.data.data)
-                                            resolve(res.data.data.map(({ id, name }) => ({ value: id, name: name })))
-
+                                                const result = res.data.map((customer) => ({
+                                                    value: customer.id,
+                                                    name: `ID:${customer.id} Name: ${customer.name}`,
+                                                    obj: customer
+                                                }))
+                                                if (query === "") {
+                                                    result.push({disabled: true, value: 0, name: "..."})
+                                                }
+                                                resolve(result)
                                             })
-                                    })}}
-                                    //     fetch(`http://localhost:8000/api/v1/customers`)
-                                    //         .then(response => {
-                                    //             console.log(response)
-                                    //             return response.json()
-                                    //         })
-                                    //         .then(({customers}) => {
-                                    //             console.log(customers)
-                                    //             // resolve(customers.map(({ id, str }) => ({ value: id, name: str })))
-                                    //         })
-                                    //         .catch(reject);
-                                    // });
-
-                                search
-                                placeholder="Search"
+                                            .catch((err) => reject(err))
+                                    })
+                                }}
                             />
                         </div>
                         <div className="field">
-                            <textarea readOnly className="textarea is-link"/>
+                            <textarea readOnly value={formatCustomerDetails()} className="textarea is-link"/>
                         </div>
                         <div className="field">
                             <div className="control">
