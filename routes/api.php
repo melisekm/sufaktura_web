@@ -18,7 +18,6 @@ use App\Http\Controllers\CustomerController;
 */
 
 Route::get('v1/customers', [CustomerController::class, 'getCustomers']);
-Route::get('v1/query/customers', [CustomerController::class, 'getCustomersByQuery']);
 Route::put("v1/customer", [CustomerController::class, "updateCustomer"]);
 Route::post("v1/customer", [CustomerController::class, "createCustomer"]);
 Route::delete("v1/customer/{id}", [CustomerController::class, "deleteCustomer"]);
@@ -33,3 +32,7 @@ Route::get('v1/invoices', [InvoiceController::class, 'getInvoices']);
 Route::get('v1/invoices/{id}', [InvoiceController::class, 'getInvoice']);
 Route::post("v1/invoices", [InvoiceController::class, "createInvoice"]);
 Route::delete("v1/invoices/{id}", [InvoiceController::class, "deleteInvoice"]);
+
+
+Route::get('v1/query/customers', [CustomerController::class, 'getCustomersByQuery']);
+Route::get('v1/query/goods', [GoodsController::class, 'getGoodsByQuery']);

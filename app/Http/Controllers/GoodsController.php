@@ -24,6 +24,19 @@ class GoodsController extends Controller
         return Goods::orderBy("id", "ASC")->paginate($per_page);
     }
 
+    public function getGoodsByQuery(Request $request)
+    {
+        $limit = (int)$request->query("limit", 10);
+        $name = $request->query("query", "");
+        $query = Goods::where("name", "ilike", "%" . $name . "%")
+            ->orWhere("category", "ilike", "%" . $name . "%");
+        if (is_numeric($name)) {
+            $query = $query->orWhere("id", $name);
+        }
+        $query = $query->orderBy("id", "ASC");
+        return $query->take($limit)->get();
+    }
+
     public function createGoods(Request $request)
     {
         $request->validate([

@@ -1,17 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Table from "../../component/Table/Table";
 import DatePicker from "react-datepicker";
 import SelectSearch from 'react-select-search';
 import RequestService from "../../utils/request-service";
+import {useDispatch, useSelector} from "react-redux";
+import AddItemModal from "./AddItemModal";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./SelectSearch.css"
+import {clearItemsInInvoice, toggleAddItemModal} from "../../redux/slices/invoices";
 
 const perPageCustomerResults = 3
 
 const InvoicesCreatePage = () => {
+    const dispatch = useDispatch()
     const [startDate, setStartDate] = useState(new Date())
     const [selectedCustomer, setSelectedCustomer] = useState("")
+    // const [items, setItems] = useState([])
+    const items = useSelector(state => state.invoices.itemsInInvoice)
+    const isAddItemModalActive = useSelector(state => state.invoices.isAddItemModalActive)
+
+    useEffect(() => {
+        dispatch(clearItemsInInvoice())
+    }, []);
 
     const redirectToInvoices = () => {
         history.push("/invoices")
@@ -65,11 +76,13 @@ const InvoicesCreatePage = () => {
                             />
                         </div>
                         <div className="field">
-                            <textarea readOnly value={formatCustomerDetails()} className="textarea is-link"/>
+                            <textarea placeholder="Customer details" readOnly value={formatCustomerDetails()} className="textarea is-link"/>
                         </div>
                         <div className="field">
                             <div className="control">
-                                <button onClick={null} className="button is-info">Add a new item</button>
+                                <button onClick={()=>dispatch(toggleAddItemModal())} className="button is-info">Add a new
+                                    item
+                                </button>
                             </div>
                         </div>
                         <h3 className="subtitle is-4 mt-3">Items</h3>
@@ -86,7 +99,7 @@ const InvoicesCreatePage = () => {
                 <Table edit={false}
                        columnInternalNames={["goods_name", "goods_count", "goods_item_price", "goods_item_total_price"]}
                        columns={["Name", "Count", "Price per item", "Price total"]}>
-                    {[]}
+                    {items}
                 </Table>
             </div>
 
@@ -97,6 +110,7 @@ const InvoicesCreatePage = () => {
                 </button>
                 <button onClick={redirectToInvoices} className="button">Back</button>
             </footer>
+            {isAddItemModalActive ? <AddItemModal/> : null}
         </React.Fragment>
     );
 };
