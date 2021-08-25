@@ -39,6 +39,7 @@ const AddItemModal = () => {
         if (!Number.isInteger(input)) {
             event.preventDefault()
         } else {
+            if(!Number.isSafeInteger(input)) return
             setCount(input)
             if (selectedItem == null) {
                 setTotalPrice(0)

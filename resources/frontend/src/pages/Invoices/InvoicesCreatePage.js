@@ -132,6 +132,7 @@ const InvoicesCreatePage = () => {
                         </div>
                         <h3 className="subtitle is-4 mt-3">Items</h3>
                         {errors.items ? <p className="help is-danger">Please choose items</p> : null}
+                        {errors.errs.length > 0 ? <p className="help is-danger">Something went wrong.</p> : null}
                     </div>
                     <div className="column is-5">
                         <h2 className="subtitle is-3">Date of issue</h2>

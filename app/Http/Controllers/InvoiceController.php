@@ -33,11 +33,15 @@ class InvoiceController extends Controller
             "customer_city" => "required",
             "customer_postcode" => "required",
             "items" => "required",
+            "items.*.goods_count" => "required|numeric|max:2147483647",
+            "items.*.goods_item_price" => "required|numeric|max:2147483647",
+            "items.*.goods_item_total_price" => "required|numeric|max:2147483647",
             "total_price" => "required|regex:/^[0-9]+\.?[0-9]{0,2}$/",
         ]);
         $invoiceRequest = $request->all();
         unset($invoiceRequest["items"]);
         $items = $request->input("items");
+        Log::info($items);
         $itemsDB = [];
         foreach ($items as $item) {
             $itemDB = new InvoiceGoodsItem($item);

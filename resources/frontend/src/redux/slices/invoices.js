@@ -3,6 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialEditPageErrors = {
     "items": false,
     "customer_name": false,
+    "errs":[]
 }
 
 export const invoicesSlice = createSlice({
@@ -12,7 +13,7 @@ export const invoicesSlice = createSlice({
         newInvoice: {
             itemsInInvoice: [],
             totalPrice: 0,
-            errors:initialEditPageErrors
+            errors: initialEditPageErrors
         },
         isAddItemModalActive: false,
     },
@@ -28,8 +29,14 @@ export const invoicesSlice = createSlice({
             state.newInvoice.totalPrice = 0
             state.newInvoice.errors = initialEditPageErrors
         },
-        createInvoiceFailure:(state,action)=>{
-            state.newInvoice.errors = action.payload
+        createInvoiceFailure: (state, action) => {
+            if (!action.payload.items || !action.payload.customer) {
+                for (let key in action.payload) {
+                    state.newInvoice.errors["errs"].push(action.payload[key])
+                }
+            } else {
+                state.newInvoice.errors = action.payload
+            }
         },
         addItemToInvoice: (state, action) => {
             const index = state.newInvoice.itemsInInvoice.findIndex(x => x.data.id === action.payload.data.id)
