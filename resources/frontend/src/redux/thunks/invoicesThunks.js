@@ -1,7 +1,7 @@
 import RequestService from "../../utils/request-service";
 import {tableLoading, tableLoadingFailure, tableLoadingSucess} from "../slices/app";
 import {setPaginationData} from "../slices/pagination";
-import {invoicesGetSuccess} from "../slices/invoices";
+import {createInvoiceFailure, invoicesGetSuccess} from "../slices/invoices";
 
 
 export const getInvoices = (searchParams) => async (dispatch) => {
@@ -32,16 +32,16 @@ export const getInvoiceItem = (id) => async (dispatch) => {
     }
 }
 
-// export const createInvoice = (goods) => async (dispatch) => {
-//     // dispatch(crudPageLoading())
-//     try {
-//         const response = await RequestService.post("/invoices", invoices)
-//         dispatch(createInvoiceSuccess(response.data))
-//     } catch (error) {
-//         dispatch(createInvoiceFailure(error.response.data))
-//         throw error.response
-//     }
-// }
+export const createInvoice = (invoice) => async (dispatch) => {
+    // dispatch(crudPageLoading())
+    try {
+        const response = await RequestService.post("/invoices", invoice)
+        // dispatch(createInvoiceSuccess(response.data))
+    } catch (error) {
+        dispatch(createInvoiceFailure(error.response.data))
+        throw error.response
+    }
+}
 
 
 export const deleteInvoice = (id) => async (dispatch) => {

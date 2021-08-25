@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {toggleAddItemModal} from "../../redux/slices/invoices";
+import {addItemToInvoice, toggleAddItemModal} from "../../redux/slices/invoices";
 import SelectSearch from "react-select-search";
 import RequestService from "../../utils/request-service";
 
@@ -12,15 +12,26 @@ const AddItemModal = () => {
     const [selectedItem, setSelectedItem] = useState()
     const [totalPrice, setTotalPrice] = useState(0)
     const [count, setCount] = useState(1)
+    const [unsetItemError, setUnsetItemError] = useState(false)
 
     const onConfirm = () => {
-        alert("stlacil confirm OMEGA")
+        if (selectedItem == null) {
+            setUnsetItemError(true)
+            return
+        }
+        const selectedItemInfo = {
+            "data": selectedItem,
+            "count": count,
+            "totalPrice": parseFloat(totalPrice)
+        }
+        dispatch(addItemToInvoice(selectedItemInfo))
+        dispatch(toggleAddItemModal())
     }
 
     const setItem = (value, option) => {
         const price = (option.obj.price * count)
         setSelectedItem(option.obj)
-        setTotalPrice(price.toFixed(2))
+        setTotalPrice(price)
     }
 
     const calculateTotalPrice = (event) => {
@@ -33,7 +44,7 @@ const AddItemModal = () => {
                 setTotalPrice(0)
             } else {
                 const price = (selectedItem.price * input)
-                setTotalPrice(price.toFixed(2))
+                setTotalPrice(price)
             }
         }
     }
@@ -96,8 +107,9 @@ const AddItemModal = () => {
                             <p className="help">How many items do you need?</p>
                         </div>
                         <div>
-                            Total price: <strong>{totalPrice} €</strong>
+                            Total price: <strong>{totalPrice.toFixed(2)} €</strong>
                         </div>
+                        {unsetItemError ? <p className="help is-danger">Please choose an item</p> : null}
                     </section>
                     <footer className="modal-card-foot">
                         <button onClick={onConfirm} className="button is-link">Confirm</button>

@@ -46,7 +46,8 @@ const InvoicesViewPage = () => {
         return invoice.items.map(
             (item) => <TableItem key={item.id} data={item} edit={false}
                                  tableCell={[item.goods_name, item.goods_count,
-                                     `${item.goods_item_price} €`, `${item.goods_item_total_price} €`]}
+                                     `${parseFloat(item.goods_item_price).toFixed(2)} €`,
+                                     `${parseFloat(item.goods_item_total_price).toFixed(2)} €`]}
             />
         )
     }
@@ -54,14 +55,13 @@ const InvoicesViewPage = () => {
     const openDeleteModal = (e) => {
         e.preventDefault()
         dispatch(toggleDeleteModal())
-
     }
 
     const redirectToInvoices = () => {
         history.push("/invoices")
     }
 
-    if(loading !== "success") return null
+    if (loading !== "success") return null
     return (
         <React.Fragment>
             <div className="box">
@@ -69,7 +69,6 @@ const InvoicesViewPage = () => {
                 <div className="columns">
                     <div className="column is-7">
                         <h2 className="subtitle is-3">Customer</h2>
-
                     </div>
                     <div className="column is-3">
                         <h2 className="subtitle is-3">Date of issue</h2>
@@ -89,10 +88,11 @@ const InvoicesViewPage = () => {
                        columns={["Name", "Count", "Price per item", "Price total"]}>
                     {getGoodsAsTableItems()}
                 </Table>
+                <div>
+                    Celkovo {parseFloat(invoice.total_price).toFixed(2)} €
+                </div>
             </div>
-
             <footer className="modal-card-foot">
-
                 <button onClick={redirectToInvoices} className="button">Back</button>
                 <button onClick={(e) => openDeleteModal(e)} className="button is-danger ml-auto">
                     Delete Invoice

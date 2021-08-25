@@ -30,7 +30,7 @@ class InvoiceGoodsItem extends Model
     protected $table = 'invoices_goods';
     public $timestamps = false;
     protected $fillable = [
-        "id", "invoices_id", "goods_name", "goods_count", "goods_item_price"
+        "id", "invoices_id", "goods_name", "goods_count", "goods_item_price", "goods_item_total_price"
     ];
 
     public function invoice()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\InvoiceGoodsItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -29,10 +30,22 @@ class InvoiceController extends Controller
             "date_of_issue" => "required",
             "customer_name" => "required",
             "customer_address" => "required",
+            "customer_city" => "required",
+            "customer_postcode" => "required",
+            "items" => "required",
             "total_price" => "required|regex:/^[0-9]+\.?[0-9]{0,2}$/",
         ]);
-        $invoice = new Invoice($request->all());
+        $invoiceRequest = $request->all();
+        unset($invoiceRequest["items"]);
+        $items = $request->input("items");
+        $itemsDB = [];
+        foreach ($items as $item) {
+            $itemDB = new InvoiceGoodsItem($item);
+            $itemsDB[] = $itemDB;
+        }
+        $invoice = new Invoice($invoiceRequest);
         $invoice->save();
+        $invoice->items()->saveMany($itemsDB);
         return response($invoice, 201);
     }
 

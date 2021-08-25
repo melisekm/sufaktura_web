@@ -31,7 +31,7 @@ class Invoice extends Model
     protected $table = 'invoices';
     public $timestamps = false;
     protected $fillable = [
-        "id", "date_of_issue", "customer_name", "customer_address", "total_price"
+        "id", "date_of_issue", "customer_name", "customer_address", "total_price", "customer_city", "customer_postcode"
     ];
 
     public function items() // Invoice::with("items")->find($id)
