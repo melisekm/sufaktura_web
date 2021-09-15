@@ -33,11 +33,12 @@ export const getInvoiceItem = (id) => async (dispatch) => {
 }
 
 export const createInvoice = (invoice) => async (dispatch) => {
-    // dispatch(crudPageLoading())
+    dispatch(tableLoading())
     try {
-        const response = await RequestService.post("/invoices", invoice)
-        // dispatch(createInvoiceSuccess(response.data))
+        await RequestService.post("/invoices", invoice)
+        dispatch(tableLoadingSucess())
     } catch (error) {
+        dispatch(tableLoadingFailure())
         dispatch(createInvoiceFailure(error.response.data))
         throw error.response
     }
@@ -45,12 +46,12 @@ export const createInvoice = (invoice) => async (dispatch) => {
 
 
 export const deleteInvoice = (id) => async (dispatch) => {
-    // dispatch(crudPageLoading())
+    dispatch(tableLoading())
     try {
         await RequestService.delete(`/invoices/${id}`)
-        // dispatch(invoiceDeleteSuccess(id))
+        dispatch(tableLoadingSucess())
     } catch (error) {
-        // dispatch(invoiceDeleteFailure(error.response.data))
+        dispatch(tableLoadingFailure())
         throw error.response
     }
 }

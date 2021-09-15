@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoiceGoodsItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class InvoiceController extends Controller
 {
@@ -41,7 +40,6 @@ class InvoiceController extends Controller
         $invoiceRequest = $request->all();
         unset($invoiceRequest["items"]);
         $items = $request->input("items");
-        Log::info($items);
         $itemsDB = [];
         foreach ($items as $item) {
             $itemDB = new InvoiceGoodsItem($item);

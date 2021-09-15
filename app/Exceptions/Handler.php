@@ -37,15 +37,12 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (Throwable $e, $request) {
-//            Log::error($e->getMessage());
             if ($e instanceof ValidationException) {
-                Log::error($e->errors());
                 return response($e->errors(), 422);
             }
             return response($e->getMessage(), 500);
         });
         $this->reportable(function (Throwable $e) {
-//            Log::info($e);
             return response($e->getMessage(), 500);
         });
     }

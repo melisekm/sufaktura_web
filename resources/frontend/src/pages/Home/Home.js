@@ -7,7 +7,7 @@ const Home = () => {
             <section className="hero is-fullheight-with-navbar ">
                 <div className="hero-body">
                     <div className="container has-text-centered">
-                        <p className="title home is-1">Hello, world!</p>
+                        <p className="title home is-1">SuperFaktura</p>
                         <p className="subtitle home is-3">
                             This is a simple webapp, a simple recreation of VAVA SuperFaktura
                             assignment.

@@ -30,7 +30,8 @@ export const invoicesSlice = createSlice({
             state.newInvoice.errors = initialEditPageErrors
         },
         createInvoiceFailure: (state, action) => {
-            if (!action.payload.items || !action.payload.customer) {
+            state.newInvoice.errors = initialEditPageErrors
+            if (action.payload.items === undefined && action.payload.customer_name === undefined) {
                 for (let key in action.payload) {
                     state.newInvoice.errors["errs"].push(action.payload[key])
                 }

@@ -89,7 +89,7 @@ const InvoicesViewPage = () => {
                     {getGoodsAsTableItems()}
                 </Table>
                 <div>
-                    Celkovo {parseFloat(invoice.total_price).toFixed(2)} €
+                    Total {parseFloat(invoice.total_price).toFixed(2)} €
                 </div>
             </div>
             <footer className="modal-card-foot">

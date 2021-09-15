@@ -30,10 +30,12 @@ const InvoicesCreatePage = () => {
     const isAddItemModalActive = useSelector(state => state.invoices.isAddItemModalActive)
     const totalPrice = useSelector(state => state.invoices.newInvoice.totalPrice)
     const errors = useSelector(state => state.invoices.newInvoice.errors)
+    const loading = useSelector(state => state.app.tableLoadingStatus)
 
     useEffect(() => {
         dispatch(clearItemsInInvoice())
     }, []);
+
 
     const redirectToInvoices = () => {
         history.push("/invoices")
@@ -132,7 +134,8 @@ const InvoicesCreatePage = () => {
                         </div>
                         <h3 className="subtitle is-4 mt-3">Items</h3>
                         {errors.items ? <p className="help is-danger">Please choose items</p> : null}
-                        {errors.errs.length > 0 ? <p className="help is-danger">Something went wrong.</p> : null}
+                        {errors.errs ? errors.errs.length > 0 ?
+                            <p className="help is-danger">Something went wrong.</p> : null : null}
                     </div>
                     <div className="column is-5">
                         <h2 className="subtitle is-3">Date of issue</h2>
@@ -147,14 +150,22 @@ const InvoicesCreatePage = () => {
                     {generateTableItems()}
                 </Table>
                 <div>
-                    Celkovo {totalPrice.toFixed(2)} €
+                    Total {totalPrice.toFixed(2)} €
                 </div>
             </div>
             <footer className="modal-card-foot">
-                <button onClick={saveInvoice} className="button is-primary">
-                    Create
-                </button>
-                <button onClick={redirectToInvoices} className="button">Back</button>
+                {
+                    loading === "loading"
+                        ? <button className="button is-primary is-loading">Create</button>
+                        : <button onClick={saveInvoice} className="button is-primary">
+                            Create
+                        </button>
+                }
+                {
+                    loading === "loading"
+                        ? <button disabled className="button">Back</button>
+                        : <button onClick={redirectToInvoices} className="button">Back</button>
+                }
             </footer>
             {isAddItemModalActive ? <AddItemModal/> : null}
         </React.Fragment>

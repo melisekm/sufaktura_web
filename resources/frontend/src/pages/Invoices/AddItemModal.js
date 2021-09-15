@@ -39,7 +39,7 @@ const AddItemModal = () => {
         if (!Number.isInteger(input)) {
             event.preventDefault()
         } else {
-            if(!Number.isSafeInteger(input)) return
+            if (!Number.isSafeInteger(input)) return
             setCount(input)
             if (selectedItem == null) {
                 setTotalPrice(0)
@@ -101,8 +101,8 @@ const AddItemModal = () => {
                         <div className="field">
                             <label className="label">Count</label>
                             <div className="control">
-                                <input className="input"
-                                       onChange={calculateTotalPrice} type="number" min="1" step="1"
+                                <input onKeyPress={(e) => e.preventDefault()}
+                                       className="input" onChange={calculateTotalPrice} type="number" min="1" step="1"
                                        value={count} placeholder="Enter a number"/>
                             </div>
                             <p className="help">How many items do you need?</p>
